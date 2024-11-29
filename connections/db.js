@@ -7,15 +7,7 @@ const pool = mysql.createPool({
   user: process.env.DB_USER,
   password: process.env.DB_PASSWORD,
   database: process.env.DB_NAME,
+  port: process.env.DB_PORT,
 });
 
-export default async (procedureName, params = []) => {
-  const connection = await pool.promise().getConnection();
-  try {
-    const [rows, fields] = await connection.execute(`CALL ${procedureName}(?)`, [params]);
-    return rows;
-  } finally {
-    connection.release();
-  }
-};
-
+export default pool.promise();
