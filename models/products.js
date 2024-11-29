@@ -16,7 +16,7 @@ class Product {
     try {
       
     } catch (err) {
-      throw new Error("Error while saving product");
+      throw new Error('Error while saving product');
     }
   }
 
@@ -24,7 +24,7 @@ class Product {
     try {
       
     } catch (err) {
-      throw new Error("Error while updating product");
+      throw new Error('Error while updating product');
     }
   }
 }
@@ -38,7 +38,7 @@ class ProductModel {
 
       return saved;
     } catch (err) {
-      throw new Error("Error while creating product");
+      throw new Error('Error while creating product');
       
     }
   }
@@ -53,7 +53,7 @@ class ProductModel {
 
       return rows[0];
     } catch (err) {
-      throw new Error("Error while fetching products");
+      throw new Error('Error while fetching products');
     }
   }
 }
