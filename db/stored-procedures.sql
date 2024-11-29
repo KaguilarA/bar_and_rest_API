@@ -1,3 +1,5 @@
+DELIMITER $$
+
 ---------------------------------
 ------------- Users -------------
 ---------------------------------
@@ -84,33 +86,13 @@ END$$
 
 CREATE PROCEDURE CreateProduct(
     IN p_name VARCHAR(100),
-    IN p_type INT,  -- Expecting an integer for type (0, 1, 2, 3)
+    IN p_type ENUM('bebida botella de vidrio', 'bebida enlatada', 'platillo o boca', 'snack'),
     IN p_stock INT,
     IN p_price DECIMAL(10, 2)
 )
 BEGIN
-    DECLARE product_type VARCHAR(100);
-
-    IF p_type = 0 THEN
-        SET product_type = 'bebida botella de vidrio';
-    ELSEIF p_type = 1 THEN
-        SET product_type = 'bebida enlatada';
-    ELSEIF p_type = 2 THEN
-        SET product_type = 'platillo o boca';
-    ELSEIF p_type = 3 THEN
-        SET product_type = 'snack';
-    ELSE
-        SIGNAL SQLSTATE '45000'
-        SET MESSAGE_TEXT = 'Invalid product type';
-    END IF;
-
-    IF EXISTS (SELECT 1 FROM `products` WHERE `name` = p_name AND `type` = product_type) THEN
-        SIGNAL SQLSTATE '45000'
-        SET MESSAGE_TEXT = CONCAT('A product with the name "', p_name, '" and type "', product_type, '" already exists');
-    ELSE
-        INSERT INTO `products` (`name`, `type`, `stock`, `price`)
-        VALUES (p_name, product_type, p_stock, p_price);
-    END IF;
+    INSERT INTO `products` (`name`, `type`, `stock`, `price`)
+    VALUES (p_name, p_type, p_stock, p_price);
 END$$
 
 CREATE PROCEDURE UpdateProduct(
@@ -257,3 +239,5 @@ BEGIN
         SET MESSAGE_TEXT = 'Stock cannot be negative';
     END IF;
 END$$
+
+DELIMITER ;

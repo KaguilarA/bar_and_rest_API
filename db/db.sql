@@ -18,6 +18,7 @@ CREATE TABLE `products` (
     `name` VARCHAR(100) NOT NULL,
     `type` ENUM('bebida botella de vidrio', 'bebida enlatada', 'platillo o boca', 'snack') 
         DEFAULT 'bebida botella de vidrio',
+    `imageUrl` VARCHAR(500) NOT NULL,
     `stock` INT UNSIGNED NOT NULL,
     `price` DECIMAL(10, 2) UNSIGNED NOT NULL,
     INDEX (`name`),
