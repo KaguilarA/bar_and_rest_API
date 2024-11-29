@@ -1,8 +1,10 @@
 import mysqlConnection from './../connections/db.js';
 
 class Product {
+  id;
+
   constructor(id = null, name, type, stock, price, imageUrl) {
-    this.id = id;
+    if (id) this.id = id;
     this.name = name;
     this.type = type;
     this.stock = stock;
@@ -15,6 +17,14 @@ class Product {
       
     } catch (err) {
       throw new Error("Error while saving product");
+    }
+  }
+
+  async update() {
+    try {
+      
+    } catch (err) {
+      throw new Error("Error while updating product");
     }
   }
 }
