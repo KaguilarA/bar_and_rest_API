@@ -130,9 +130,9 @@ export default class UserModel extends BaseModel {
   static async validatePassword(username, password) {
     try {
       const { authParams } = new UserModel({ username, password });
-      const [rows] = await UserModel.storedProcedure('ValidatePasswordHash', authParams);
+      const [ rows ] = await UserModel.storedProcedure('ValidatePasswordHash', authParams);
 
-      return rows;
+      return { isValid: !!(rows[0].is_valid) };
     } catch (err) {
       throw new Error('Error while validating password');
     }

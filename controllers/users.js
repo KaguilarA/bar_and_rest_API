@@ -69,3 +69,13 @@ export const updateUserPassword = async (req, res) => {
     res.status(404).json({ message: err.message });
   }
 }
+
+export const validatePassword = async (req, res) => {
+  try {
+    const { username, password } = req.body;
+    const isValid = await UserModel.validatePassword(username, password);
+    res.status(200).json(isValid);
+  } catch (err) {
+    res.status(404).json({ message: err.message });
+  }
+}

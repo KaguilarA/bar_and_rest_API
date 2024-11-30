@@ -7,6 +7,7 @@ import {
   disableUser,
   updateUser,
   updateUserPassword,
+  validatePassword
 } from './../controllers/users.js';
 
 const router = express.Router();
@@ -16,6 +17,8 @@ router.get('/', getAllUsers);
 router.get('/:id', getUserById);
 
 router.post('/', createUser);
+
+router.post('/validate-password', validatePassword);
 
 router.delete('/:id', disableUser);
 
