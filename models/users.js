@@ -1,6 +1,6 @@
 import { StoredProcedure } from './../connections/db.js';
 
-class User {
+export default class UserModel {
 
   constructor({ name, lastname, username, password, id, state, dateCreated, date_created }) {
     this.name = name;
@@ -22,27 +22,17 @@ class User {
   }
 
   get updateParams() {
-    return [this.name, this.lastname, this.username];
+    return [this.id, this.name, this.lastname, this.username];
   }
 
   static parseUserArray(users) {
-    return Array.from(users, user => User.parseUser(user));
+    return Array.from(users, user => new UserModel(user));
   }
 
-  static parseUser(user) {
-    return new User(user);
-  }
-}
-
-class UserModel {
-
-  async createUser(userData) {
+  static async createUser(userData) {
     try {
-      const newUser = User.parseUser(userData);
-      const { affectedRows } = await StoredProcedure(
-        'CreateUser',
-        newUser.registerParams
-      );
+      const { registerParams } = new UserModel(userData);
+      const { affectedRows } = await StoredProcedure('CreateUser', registerParams);
 
       if (affectedRows === 1) return { saved: true };
     } catch (err) {
@@ -50,7 +40,7 @@ class UserModel {
     }
   }
 
-  async activateUser(userId) {
+  static async activateUser(userId) {
     try {
       const { affectedRows } = await StoredProcedure('UpdateUserState', [userId, true]);
 
@@ -60,7 +50,7 @@ class UserModel {
     }
   }
 
-  async disableUser(userId) {
+  static async disableUser(userId) {
     try {
       const { affectedRows } = await StoredProcedure('UpdateUserState', [userId, false]);
 
@@ -70,9 +60,9 @@ class UserModel {
     }
   }
 
-  async getAllUsers() {
+  static async getAllUsers() {
     try {
-      const [rows] = await StoredProcedure('GetAllUsers', null, User.parseUserArray);
+      const [rows] = await StoredProcedure('GetAllUsers', null, UserModel.parseUserArray);
 
       return rows;
     } catch (err) {
@@ -80,9 +70,9 @@ class UserModel {
     }
   }
 
-  async getUserById(userId) {
+  static async getUserById(userId) {
     try {
-      const [rows] = await StoredProcedure('GetUserById', [userId], User.parseUserArray);
+      const [rows] = await StoredProcedure('GetUserById', [userId], UserModel.parseUserArray);
 
       return rows[0];
     } catch (err) {
@@ -90,40 +80,35 @@ class UserModel {
     }
   }
 
-  async updateUser(userData) {
+  static async updateUser(userData) {
     try {
-      const user = User.parseUser(userData);
-      const [rows] = await StoredProcedure(
-        'UpdateUser',
-        user.updateParams
-      );
+      const { updateParams } = new UserModel(userData);
+      const { affectedRows } = await StoredProcedure('UpdateUser', updateParams);
 
-      return rows;
+      if (affectedRows === 1) return { userUpdated: true };
+
     } catch (err) {
       throw new Error('Error while updating user');
     }
   }
 
-  async updateUserPassword(username, password) {
+  static async updateUserPassword(username, password) {
     try {
-      const user = User.parseUser({ username, password });
-      const [rows] = await StoredProcedure(
-        'UpdateUserPassword',
-        user.authParams
-      );
+      const { authParams } = new UserModel({ username, password });
+      const { affectedRows } = await StoredProcedure('UpdateUserPassword', authParams);
 
-      return rows;
+      if (affectedRows === 1) return { userUpdated: true };
     } catch (err) {
       throw new Error('Error while updating password');
     }
   }
 
-  async validatePassword(username, password) {
+  static async validatePassword(username, password) {
     try {
-      const user = User.parseUser({ username, password });
+      const { authParams } = new UserModel({ username, password });
       const [rows] = await StoredProcedure(
         'ValidatePasswordHash',
-        user.authParams
+        authParams
       );
 
       return rows;
@@ -132,5 +117,3 @@ class UserModel {
     }
   }
 }
-
-export default new UserModel();
