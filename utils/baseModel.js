@@ -4,8 +4,10 @@ process.loadEnvFile();
 
 export class BaseModel {
 
-  constructor(id) {
+  constructor(id, state, date_created) {
     if (id) this.id = id;
+    if (state) this.state = state;
+    if (date_created) this.dateCreated = Date(date_created);
   }
 
   static #connect() {
