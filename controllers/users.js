@@ -9,7 +9,7 @@ export const activateUser = async (req, res) => {
   try {
     const { id } = req.params;
     if (!id) res.status(400).json({ message: 'User ID is required' });
-    const user = await UserModel.updateState(parseInt(id), true);
+    const user = await UserModel.updateState(+id, true);
     res.status(200).json(user);
   } catch (err) {
     res.status(404).json({ message: err.message });
@@ -43,7 +43,7 @@ export const disableUser = async (req, res) => {
   try {
     const { id } = req.params;
     if (!id) res.status(400).json({ message: 'User ID is required' });
-    const user = await UserModel.updateState(parseInt(id), false);
+    const user = await UserModel.updateState(+id, false);
     res.status(200).json(user);
   } catch (err) {
     res.status(404).json({ message: err.message });
@@ -101,7 +101,7 @@ export const getUserById = async (req, res) => {
   try {
     const { id } = req.params;
     if (!id) res.status(400).json({ message: 'User ID is required' });
-    const user = await UserModel.getById(parseInt(id));
+    const user = await UserModel.getById(+id);
     res.status(200).json(user);
   } catch (err) {
     res.status(404).json({ message: err.message });
@@ -118,7 +118,7 @@ export const updateUser = async (req, res) => {
     const user = req.body;
     const { id } = req.params;
     if (!id) res.status(400).json({ message: 'User ID is required' });
-    const updatedUser = await UserModel.update({ ...user, id: parseInt(id) });
+    const updatedUser = await UserModel.update({ ...user, id: +id });
     res.status(200).json(updatedUser);
   } catch (err) {
     res.status(404).json({ message: err.message });

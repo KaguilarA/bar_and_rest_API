@@ -13,10 +13,10 @@ export class BaseModel {
    * @param {boolean} state The state of the model.
    * @param {string} date_created The creation date of the model.
    */
-  constructor(id, state, date_created) {
+  constructor(id, state, dateCreated) {
     if (id) this.id = id;
     this.setState(state);
-    this.setDateCreated(date_created);
+    this.setDateCreated(dateCreated);
   }
 
   /**
@@ -53,7 +53,7 @@ export class BaseModel {
 
   /**
    * Creates placeholders for the query parameters.
-   * @param {Array} params The query parameters.
+   * @param {string[]} params The query parameters.
    * @returns {string} A string of placeholders.
    */
   static #createPlaceholders(params) {
@@ -70,7 +70,7 @@ export class BaseModel {
   /**
    * Validates and formats the stored procedure.
    * @param {string} procedure The name of the stored procedure.
-   * @param {Array} params The parameters of the stored procedure.
+   * @param {string[]} params The parameters of the stored procedure.
    * @returns {string} The formatted stored procedure query.
    */
   static #validateProcedure(procedure, params) {
@@ -85,7 +85,7 @@ export class BaseModel {
   /**
    * Executes a stored procedure.
    * @param {string} procedure The name of the stored procedure.
-   * @param {Array} params The parameters of the stored procedure.
+   * @param {string[]} params The parameters of the stored procedure.
    * @param {Function} parser An optional function to parse the results.
    * @returns {Promise} A promise that resolves with the query results.
    */

@@ -48,7 +48,7 @@ export default class UserModel extends BaseModel {
 
   /**
    * Gets the authentication parameters.
-   * @returns {Array} The authentication parameters.
+   * @returns {string[]} The authentication parameters.
    */
   get authParams() {
     return [this.username, this.password];
@@ -56,7 +56,7 @@ export default class UserModel extends BaseModel {
 
   /**
    * Gets the registration parameters.
-   * @returns {Array} The registration parameters.
+   * @returns {string[]} The registration parameters.
    */
   get registerParams() {
     return [this.name, this.lastname, this.username, this.password];
@@ -64,7 +64,7 @@ export default class UserModel extends BaseModel {
 
   /**
    * Gets the update parameters.
-   * @returns {Array} The update parameters.
+   * @returns {string[]} The update parameters.
    */
   get updateParams() {
     return [this.id, this.name, this.lastname, this.username];
