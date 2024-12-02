@@ -4,6 +4,7 @@ import { BaseModel } from './../utils/baseModel.js';
 const proceduresIds = {
   getAll: 'GetAllProducts',
   getById: 'GetProductById',
+  getByState: 'GetProductsByState',
   getByType: 'GetProductsByType',
   register: 'CreateProduct',
   update: 'UpdateProduct',
@@ -88,6 +89,25 @@ export default class ProductModel extends BaseModel {
       return rows[0];
     } catch (err) {
       throw new Error('Error while fetching product', err);
+    }
+  }
+
+  /**
+   * Gets products by type.
+   * @param {boolean} state The state of the products to fetch.
+   * @returns {Promise<ProductModel[]>} The list of products with the specified state.
+   */
+  static async getByState(state) {
+    try {
+      const [rows] = await ProductModel.storedProcedure(
+        proceduresIds.getByState,
+        [state],
+        products => Array.from(products, product => new ProductModel(product))
+      );
+
+      return rows;
+    } catch (err) {
+      throw new Error('Error while fetching products by state', err);
     }
   }
 
