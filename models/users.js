@@ -1,6 +1,17 @@
-import { BaseModel } from "./../utils/baseModel.js";
+import { BaseModel } from './../utils/baseModel.js';
+
+const proceduresIds = {
+  getAll: 'GetAllUsers',
+  getById: 'GetUserById',
+  register: 'CreateUser',
+  update: 'UpdateUser',
+  updatePassword: 'UpdateUserPassword',
+  updateState: 'UpdateUserState',
+  validatePassword: 'ValidatePasswordHash',
+}
 
 export default class UserModel extends BaseModel {
+
   constructor({
     name,
     lastname,
@@ -31,99 +42,99 @@ export default class UserModel extends BaseModel {
     return [this.id, this.name, this.lastname, this.username];
   }
 
-  static async createUser(userData) {
-    try {
-      const { registerParams } = new UserModel(userData);
-      const { affectedRows } = await UserModel.storedProcedure(
-        "CreateUser",
-        registerParams
-      );
-
-      if (affectedRows === 1) return { saved: true };
-    } catch (err) {
-      throw new Error("Error while creating user");
-    }
-  }
-
-  static async activateUser(userId) {
+  static async activate(userId) {
     try {
       const { affectedRows } = await UserModel.storedProcedure(
-        "UpdateUserState",
+        proceduresIds.updateState,
         [userId, true]
       );
 
       if (affectedRows === 1) return { userState: true };
     } catch (err) {
-      throw new Error("Error while deleting user");
+      throw new Error('Error while deleting user');
     }
   }
 
-  static async disableUser(userId) {
+  static async disable(userId) {
     try {
       const { affectedRows } = await UserModel.storedProcedure(
-        "UpdateUserState",
+        proceduresIds.updateState,
         [userId, false]
       );
 
       if (affectedRows === 1) return { userState: false };
     } catch (err) {
-      throw new Error("Error while deleting user");
+      throw new Error('Error while deleting user');
     }
   }
 
-  static async getAllUsers() {
+  static async getAll() {
     try {
       const [rows] = await UserModel.storedProcedure(
-        "GetAllUsers",
+        proceduresIds.getAll,
         null,
         (users) => Array.from(users, (user) => new UserModel(user))
       );
 
       return rows;
     } catch (err) {
-      return new Error("Error while fetching users", err);
+      return new Error('Error while fetching users', err);
     }
   }
 
-  static async getUserById(userId) {
+  static async getById(userId) {
     try {
       const [rows] = await UserModel.storedProcedure(
-        "GetUserById",
+        proceduresIds.getById,
         [userId],
         (users) => Array.from(users, (user) => new UserModel(user))
       );
 
       return rows[0];
     } catch (err) {
-      return new Error("Error while fetching user", err);
+      return new Error('Error while fetching user', err);
     }
   }
 
-  static async updateUser(userData) {
+  static async register(userData) {
+    try {
+      const { registerParams } = new UserModel(userData);
+      const { affectedRows } = await UserModel.storedProcedure(
+        proceduresIds.register,
+        registerParams
+      );
+
+      if (affectedRows === 1) return { saved: true };
+    } catch (err) {
+      throw new Error('Error while creating user');
+    }
+  }
+
+  static async update(userData) {
     try {
       const { updateParams } = new UserModel(userData);
       const { affectedRows } = await UserModel.storedProcedure(
-        "UpdateUser",
+        proceduresIds.update,
         updateParams
       );
 
       if (affectedRows === 1) return { userUpdated: true };
     } catch (err) {
-      throw new Error("Error while updating user");
+      throw new Error('Error while updating user');
     }
   }
 
-  static async updateUserPassword(username, password) {
+  static async updatePassword(username, password) {
     try {
       const { authParams } = new UserModel({ username, password });
       const { affectedRows } = await UserModel.storedProcedure(
-        "UpdateUserPassword",
+        proceduresIds.updatePassword,
         authParams
       );
 
       if (affectedRows === 1) return { userUpdated: true };
     } catch (err) {
-      throw new Error("Error while updating password");
+      throw new Error('Error while updating password');
     }
   }
 
@@ -131,13 +142,13 @@ export default class UserModel extends BaseModel {
     try {
       const { authParams } = new UserModel({ username, password });
       const [rows] = await UserModel.storedProcedure(
-        "ValidatePasswordHash",
+        proceduresIds.validatePassword,
         authParams
       );
 
       return { isValid: !!rows[0].is_valid };
     } catch (err) {
-      throw new Error("Error while validating password");
+      throw new Error('Error while validating password');
     }
   }
 }
