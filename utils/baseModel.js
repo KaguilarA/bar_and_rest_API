@@ -9,27 +9,35 @@ process.loadEnvFile();
 export class BaseModel {
   /**
    * Constructor for the BaseModel class.
-   * @param {number} id - The ID of the model.
-   * @param {boolean} state - The state of the model.
-   * @param {string} date_created - The creation date of the model.
+   * @param {number} id The ID of the model.
+   * @param {boolean} state The state of the model.
+   * @param {string} date_created The creation date of the model.
    */
   constructor(id, state, date_created) {
     if (id) this.id = id;
-    if (state) this.state = state;
+    this.setState(state);
     this.setDateCreated(date_created);
   }
 
   /**
    * Sets the creation date of the model.
-   * @param {string} date - The creation date in string format.
+   * @param {string} date The creation date in string format.
    */
   setDateCreated(date) {
     if (date) this.dateCreated = new Date(date);
   }
 
   /**
+   * Sets the state of the model.
+   * @param {number} state The state in number format.
+   */
+  setState(state) {
+    if (state !== undefined || state !== null) this.state = !!state;
+  }
+
+  /**
    * Creates a pool connection to the database.
-   * @returns {Promise} - A promise that resolves with the pool connection.
+   * @returns {Promise} A promise that resolves with the pool connection.
    */
   static #connect() {
     const pool = mysql.createPool({

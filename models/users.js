@@ -4,7 +4,7 @@ import { BaseModel } from './../utils/baseModel.js';
 const proceduresIds = {
   getAll: 'GetAllUsers',
   getById: 'GetUserById',
-  getByState: 'GetUsersByState',
+  getByState: 'GetUserByState',
   register: 'CreateUser',
   update: 'UpdateUser',
   updatePassword: 'UpdateUserPassword',
@@ -12,6 +12,10 @@ const proceduresIds = {
   validatePassword: 'ValidatePasswordHash',
 };
 
+/**
+ * UserModel class that provides common methods for interacting with the user entity.
+ * @extends BaseModel
+ */
 export default class UserModel extends BaseModel {
   /**
    * Constructor for the UserModel class.
@@ -35,12 +39,11 @@ export default class UserModel extends BaseModel {
     dateCreated,
     date_created,
   }) {
-    super(id, state, date_created);
+    super(id, state, date_created || dateCreated);
     this.name = name;
     this.lastname = lastname;
     this.username = username;
     if (password) this.password = password;
-    this.setDateCreated(dateCreated);
   }
 
   /**

@@ -65,6 +65,34 @@ export const getAllUsers = async (req, res) => {
 }
 
 /**
+ * Gets all active users.
+ * @param {Object} req The request object.
+ * @param {Object} res The response object.
+ */
+export const getActiveUsers = async (req, res) => {
+  try {
+    const users = await UserModel.getByState(true);
+    res.status(200).json(users);
+  } catch (err) {
+    res.status(404).json({ message: err.message });
+  }
+}
+
+/**
+ * Gets all disabled users.
+ * @param {Object} req The request object.
+ * @param {Object} res The response object.
+ */
+export const getDisabledUsers = async (req, res) => {
+  try {
+    const users = await UserModel.getByState(false);
+    res.status(200).json(users);
+  } catch (err) {
+    res.status(404).json({ message: err.message });
+  }
+}
+
+/**
  * Gets a user by ID.
  * @param {Object} req The request object.
  * @param {Object} res The response object.
