@@ -1,33 +1,35 @@
-import { BaseModel } from './../utils/baseModel.js';
+import { BaseModel } from "./../utils/baseModel.js";
 
 // Stored procedures for the user model.
 const proceduresIds = {
-  getAll: 'GetAllUsers',
-  getById: 'GetUserById',
-  getByState: 'GetUserByState',
-  register: 'CreateUser',
-  update: 'UpdateUser',
-  updatePassword: 'UpdateUserPassword',
-  updateState: 'UpdateUserState',
-  validatePassword: 'ValidatePasswordHash',
+  getAll: "GetAllUsers",
+  getById: "GetUserById",
+  getByState: "GetUserByState",
+  register: "CreateUser",
+  update: "UpdateUser",
+  updatePassword: "UpdateUserPassword",
+  updateState: "UpdateUserState",
+  validatePassword: "ValidatePasswordHash",
 };
 
 /**
- * UserModel class that provides common methods for interacting with the user entity.
+ * UserModel class that provides methods for interacting with the user entity in the database.
+ * This model extends BaseModel and uses its utilities to call stored procedures.
  * @extends BaseModel
  */
 export default class UserModel extends BaseModel {
   /**
    * Constructor for the UserModel class.
-   * @param {Object} userData - The user data.
-   * @param {string} userData.name - The name of the user.
-   * @param {string} userData.lastname - The lastname of the user.
-   * @param {string} userData.username - The username of the user.
-   * @param {string} [userData.password] - The password of the user.
-   * @param {number} [userData.id] - The ID of the user.
-   * @param {boolean} [userData.state] - The state of the user.
-   * @param {string} [userData.dateCreated] - The creation date of the user.
-   * @param {string} [userData.date_created] - The creation date of the user.
+   * Ensures required fields are set and validates the structure of input data.
+   *
+   * @param {Object} userData The user data.
+   * @param {string} userData.name The name of the user.
+   * @param {string} userData.lastname The last name of the user.
+   * @param {string} userData.username The username of the user.
+   * @param {string} [userData.password] The password of the user.
+   * @param {number} [userData.id] The ID of the user.
+   * @param {boolean} [userData.state] The state of the user.
+   * @param {string} [userData.dateCreated] The creation date of the user in ISO format.
    */
   constructor({
     name,
@@ -40,9 +42,9 @@ export default class UserModel extends BaseModel {
     date_created,
   }) {
     super(id, state, date_created || dateCreated);
-    this.name = name;
-    this.lastname = lastname;
-    this.username = username;
+    if (name) this.name = name;
+    if (lastname) this.lastname = lastname;
+    if (lastname) this.username = username;
     if (password) this.password = password;
   }
 
@@ -84,7 +86,7 @@ export default class UserModel extends BaseModel {
 
       return rows;
     } catch (err) {
-      throw new Error('Error while fetching users');
+      throw new Error("Error while fetching users");
     }
   }
 
@@ -103,7 +105,7 @@ export default class UserModel extends BaseModel {
 
       return rows[0];
     } catch (err) {
-      throw new Error('Error while fetching user');
+      throw new Error("Error while fetching user");
     }
   }
 
@@ -122,7 +124,7 @@ export default class UserModel extends BaseModel {
 
       return rows;
     } catch (err) {
-      throw new Error('Error while fetching users by state');
+      throw new Error("Error while fetching users by state");
     }
   }
 
@@ -141,7 +143,7 @@ export default class UserModel extends BaseModel {
 
       if (affectedRows === 1) return { saved: true };
     } catch (err) {
-      throw new Error('Error while creating user');
+      throw new Error("Error while creating user");
     }
   }
 
@@ -160,7 +162,7 @@ export default class UserModel extends BaseModel {
 
       if (affectedRows === 1) return { userUpdated: true };
     } catch (err) {
-      throw new Error('Error while updating user');
+      throw new Error("Error while updating user");
     }
   }
 
@@ -180,7 +182,7 @@ export default class UserModel extends BaseModel {
 
       if (affectedRows === 1) return { userUpdated: true };
     } catch (err) {
-      throw new Error('Error while updating password');
+      throw new Error("Error while updating password");
     }
   }
 
@@ -200,7 +202,7 @@ export default class UserModel extends BaseModel {
 
       if (affectedRows === 1) return { userState: state };
     } catch (err) {
-      throw new Error('Error while updating user state');
+      throw new Error("Error while updating user state");
     }
   }
 
@@ -220,7 +222,7 @@ export default class UserModel extends BaseModel {
 
       return { isValid: !!rows[0].is_valid };
     } catch (err) {
-      throw new Error('Error while validating password');
+      throw new Error("Error while validating password");
     }
   }
 }

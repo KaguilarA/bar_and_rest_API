@@ -1,13 +1,15 @@
 import express from 'express';
 import {
+  activateUser,
+  createUser,
+  disableUser,
   getAllUsers,
   getActiveUsers,
   getDisabledUsers,
   getUserById,
-  createUser,
+  updateUser,
   updateUserPassword,
   validatePassword,
-  disableUser
 } from './../controllers/users.js';
 
 const router = express.Router();
@@ -21,7 +23,7 @@ router.get('/', getAllUsers);
 
 /**
  * @route GET /users/active
- * @description Gets all active users
+ * @description Gets all disabled users
  * @access Public
  */
 router.get('/active', getActiveUsers);
@@ -53,6 +55,20 @@ router.post('/', createUser);
  * @access Public
  */
 router.post('/validate-password', validatePassword);
+
+/**
+ * @route PUT /users/:id
+ * @description Update a user by ID
+ * @access Public
+ */
+router.put('/:id', updateUser);
+
+/**
+ * @route PATCH /users/:id
+ * @description Updates a user by ID
+ * @access Public
+ */
+router.patch('/:id', activateUser);
 
 /**
  * @route PUT /users/:id/password
