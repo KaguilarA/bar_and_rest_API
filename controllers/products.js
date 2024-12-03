@@ -87,7 +87,7 @@ export const getProductById = async (req, res) => {
  */
 export const getProductByType = async (req, res) => {
   try {
-    const { type } = req.params;
+    const { type } = req.body;
     if (!type) res.status(400).json({ message: 'Product type is required' });
     const products = await ProductModel.getByType(type);
     res.status(200).json(products);
@@ -119,7 +119,7 @@ export const updateProduct = async (req, res) => {
  */
 export const updateProductStock = async (req, res) => {
   try {
-    const { id, stock } = req.params;
+    const { id, stock } = req.body;
     if (!id || !stock) res.status(400).json({ message: 'Product ID and stock are required' });
     const product = await ProductModel.updateStock(parseInt(id), parseInt(stock));
     res.status(200).json(product);

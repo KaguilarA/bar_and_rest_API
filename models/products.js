@@ -30,11 +30,11 @@ export default class ProductModel extends BaseModel {
    * @param {string} [productData.dateCreated] The creation date of the product.
    * @param {string} [productData.date_created] The creation date of the product.
    */
-  constructor({ name, type, imageUrl, stock, price, state, id, dateCreated, date_created }) {
+  constructor({ name, type, imageUrl, image_url, stock, price, state, id, dateCreated, date_created }) {
     super(id, state, (date_created || dateCreated));
     this.name = name;
     this.type = type;
-    this.imageUrl = imageUrl;
+    this.imageUrl = imageUrl || image_url;
     this.stock = +stock;
     this.price = +price;
   }
