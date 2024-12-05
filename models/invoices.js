@@ -132,6 +132,25 @@ export default class InvoiceModel extends BaseModel {
   }
 
   /**
+   * Get invoices by state.
+   * @param {string} state The state of the invoice.
+   * @returns {Promise<Array>} The list of invoices.
+  */
+  static async getByState(state) {
+    try {
+      const [rows] = await InvoiceModel.storedProcedure(
+        proceduresIds.getByState,
+        [state],
+        invoices => Array.from(invoices, invoice => new InvoiceModel(invoice))
+      );
+
+      return rows;
+    } catch (err) {
+      throw new Error('Error while fetching invoices', err);
+    }
+  }
+
+  /**
    * Get the total amount of an invoice.
    * @param {number} id The ID of the invoice.
    * @returns {Promise<Object>} The total amount of the invoice.

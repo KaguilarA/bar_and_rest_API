@@ -45,6 +45,21 @@ export const getInvoiceById = async (req, res) => {
 }
 
 /**
+ * Get an invoice by state.
+ * @param {Object} req - The request object.
+ * @param {Object} res - The response object.
+ */
+export const getInvoiceByState = async (req, res) => {
+  try {
+    const { state } = req.body;
+    const invoices = await InvoiceModel.getByState(state);
+    res.status(200).json(invoices);
+  } catch (err) {
+    res.status(500).json({ message: err.message });
+  }
+}
+
+/**
  * Get the total amount of an invoice.
  * @param {Object} req - The request object.
  * @param {Object} res - The response object.
