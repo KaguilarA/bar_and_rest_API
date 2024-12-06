@@ -1,4 +1,4 @@
-import { BaseModel } from './../utils/baseModel.js';
+import { BaseModel } from './../../utils/baseModel.js';
 
 // Stored procedures for the invoice model.
 const proceduresIds = {
