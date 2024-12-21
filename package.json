@@ -18,6 +18,8 @@
   "dependencies": {
     "body-parser": "^1.20.3",
     "express": "^4.21.1",
+    "express-mysql-session": "^3.0.3",
+    "express-session": "^1.18.1",
     "mysql2": "^3.11.4",
     "pug": "^3.0.3"
   }
