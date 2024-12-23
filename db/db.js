@@ -1,4 +1,6 @@
 import mysql from "mysql2";
+import session from 'express-session';
+import MySQLStore from 'express-mysql-session';
 
 // Load environment variables
 process.loadEnvFile();
@@ -11,12 +13,14 @@ const {
   DB_PORT: port = 3306,
 } = process.env;
 
+const Store = MySQLStore(session);
+
 const pool = mysql
   .createPool({ host, user, password, database, port })
   .promise();
 
 // Configure session store
-export const sessionStore = new MySQLStore({}, pool);
+export const sessionStore = new Store({}, pool);
 
 /**
  * Validates and formats the stored procedure call.
@@ -44,7 +48,7 @@ const validateProcedure = (procedure, params) => {
  * @param {Function} [parser] - Optional parser function to process the result.
  * @returns {Promise<Array>} The result of the stored procedure.
  */
-const executeProcedure = async (procedure, params, parser) => {
+export const executeProcedure = async (procedure, params, parser) => {
   const query = validateProcedure(procedure, params);
 
   try {
@@ -56,5 +60,3 @@ const executeProcedure = async (procedure, params, parser) => {
     throw new Error(err.message || 'Database error');
   }
 };
-
-export default executeProcedure;

@@ -1,21 +1,26 @@
 import express from 'express';
 import bodyParser from 'body-parser';
-import UsersRoutes from './routes/users.js';
-import ProductsRoutes from './routes/products.js';
-import InvoicesRoutes from './routes/invoices.js';
+import APIRoutes from './api/api.js';
 
+// Load environment variables
 process.loadEnvFile();
 
 const app = express();
+const PORT = process.env.PORT || 3000;
 
+// Set the view engine to Pug
+app.set('view engine', 'pug');
+
+// Middleware to parse URL-encoded bodies
 app.use(bodyParser.urlencoded({ extended: true }));
 
-app.use('/users', UsersRoutes);
+/**
+ * @route /api
+ * @description Routes for API-related operations
+ */
+app.use('/api', APIRoutes);
 
-app.use('/products', ProductsRoutes);
-
-app.use('/invoices', InvoicesRoutes);
-
-app.listen(process.env.PORT, () => {
-  console.log(`Server is running on port ${process.env.PORT}`);
+// Start the server
+app.listen(PORT, () => {
+  console.log(`Server is running on port ${PORT}`);
 });
