@@ -1,14 +1,15 @@
-import { BaseModel } from "./../../utils/baseModel.js";
+import BaseModel from "./../../utils/baseModel.js";
 
 // Stored procedures for the user model.
 const proceduresIds = {
+  register: "CreateUser",
   getAll: "GetAllUsers",
+  getAuthData: "GetUserAuthData",
   getById: "GetUserById",
   getByState: "GetUserByState",
-  register: "CreateUser",
-  update: "UpdateUser",
   updatePassword: "UpdateUserPassword",
   updateState: "UpdateUserState",
+  update: "UpdateUser",
   validatePassword: "ValidatePasswordHash",
 };
 
@@ -32,19 +33,17 @@ export default class UserModel extends BaseModel {
    * @param {string} [userData.dateCreated] The creation date of the user in ISO format.
    */
   constructor({
+    id,
     name,
     lastname,
     username,
     password,
-    id,
     state,
-    dateCreated,
     date_created,
   }) {
-    super(id, state, date_created || dateCreated);
-    if (name) this.name = name;
+    super({ id, name, state, date_created });
     if (lastname) this.lastname = lastname;
-    if (lastname) this.username = username;
+    if (username) this.username = username;
     if (password) this.password = password;
   }
 
@@ -61,7 +60,7 @@ export default class UserModel extends BaseModel {
    * @returns {string[]} The registration parameters.
    */
   get registerParams() {
-    return [this.name, this.lastname, this.username, this.password];
+    return [this.name, this.lastname, this.username, this.state, this.password];
   }
 
   /**
@@ -78,7 +77,7 @@ export default class UserModel extends BaseModel {
    */
   static async getAll() {
     try {
-      const [rows] = await UserModel.storedProcedure(
+      const [rows] = await UserModel.executeProcedure(
         proceduresIds.getAll,
         null,
         (users) => Array.from(users, (user) => new UserModel(user))
@@ -97,7 +96,7 @@ export default class UserModel extends BaseModel {
    */
   static async getById(userId) {
     try {
-      const [rows] = await UserModel.storedProcedure(
+      const [rows] = await UserModel.executeProcedure(
         proceduresIds.getById,
         [userId],
         (users) => Array.from(users, (user) => new UserModel(user))
@@ -116,7 +115,7 @@ export default class UserModel extends BaseModel {
    */
   static async getByState(state) {
     try {
-      const [rows] = await UserModel.storedProcedure(
+      const [rows] = await UserModel.executeProcedure(
         proceduresIds.getByState,
         [state],
         (users) => Array.from(users, (user) => new UserModel(user))
@@ -136,7 +135,7 @@ export default class UserModel extends BaseModel {
   static async register(userData) {
     try {
       const { registerParams } = new UserModel(userData);
-      const { affectedRows } = await UserModel.storedProcedure(
+      const { affectedRows } = await UserModel.executeProcedure(
         proceduresIds.register,
         registerParams
       );
@@ -155,7 +154,7 @@ export default class UserModel extends BaseModel {
   static async update(userData) {
     try {
       const { updateParams } = new UserModel(userData);
-      const { affectedRows } = await UserModel.storedProcedure(
+      const { affectedRows } = await UserModel.executeProcedure(
         proceduresIds.update,
         updateParams
       );
@@ -175,7 +174,7 @@ export default class UserModel extends BaseModel {
   static async updatePassword(username, password) {
     try {
       const { authParams } = new UserModel({ username, password });
-      const { affectedRows } = await UserModel.storedProcedure(
+      const { affectedRows } = await UserModel.executeProcedure(
         proceduresIds.updatePassword,
         authParams
       );
@@ -195,7 +194,7 @@ export default class UserModel extends BaseModel {
    */
   static async updateState(userId, state) {
     try {
-      const { affectedRows } = await UserModel.storedProcedure(
+      const { affectedRows } = await UserModel.executeProcedure(
         proceduresIds.updateState,
         [userId, state]
       );
@@ -215,7 +214,7 @@ export default class UserModel extends BaseModel {
   static async validatePassword(username, password) {
     try {
       const { authParams } = new UserModel({ username, password });
-      const [rows] = await UserModel.storedProcedure(
+      const [rows] = await UserModel.executeProcedure(
         proceduresIds.validatePassword,
         authParams
       );
