@@ -1,4 +1,5 @@
 import express from 'express';
+import { validateAuthUser } from '../../middlewares/auth.js';
 import {
   activateProduct,
   createProduct,
@@ -31,7 +32,7 @@ router.get('/:id', getProductById);
  * @description Create a new product
  * @access Public
  */
-router.post('/', createProduct);
+router.post('/', [validateAuthUser], createProduct);
 
 /**
  * @route POST /products/type
@@ -45,27 +46,27 @@ router.post('/type', getProductByType);
  * @description Update the stock of a product
  * @access Public
  */
-router.patch('/stock', updateProductStock);
+router.patch('/stock', [validateAuthUser], updateProductStock);
 
 /**
  * @route PATCH /products/:id
  * @description Activate a product
  * @access Public
  */
-router.patch('/:id', activateProduct);
+router.patch('/:id', [validateAuthUser], activateProduct);
 
 /**
  * @route PUT /products
  * @description Update a product
  * @access Public
  */
-router.put('/', updateProduct);
+router.put('/', [validateAuthUser], updateProduct);
 
 /**
  * @route DELETE /products/:id
  * @description Disable a product
  * @access Public
  */
-router.delete('/:id', disableProduct);
+router.delete('/:id', [validateAuthUser], disableProduct);
 
 export default router;

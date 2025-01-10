@@ -1,4 +1,5 @@
 import express from 'express';
+import { validateAuthUser } from '../../middlewares/auth.js';
 import {
   createInvoice,
   getAllInvoices,
@@ -16,7 +17,7 @@ const router = express.Router();
  * @description Get all invoices
  * @access Public
  */
-router.get('/', getAllInvoices);
+router.get('/', [validateAuthUser], getAllInvoices);
 
 /**
  * @route GET /invoices/:id
@@ -37,27 +38,27 @@ router.get('/:id/total', getInvoiceTotal);
  * @description Create a new invoice
  * @access Public
  */
-router.post('/', createInvoice);
+router.post('/', [validateAuthUser], createInvoice);
 
 /**
  * @route POST /invoices/state
  * @description Get invoices by state
  * @access Public
  */
-router.post('/state', getInvoiceByState);
+router.post('/state', [validateAuthUser], getInvoiceByState);
 
 /**
  * @route PUT /invoices/:id/state
  * @description Update the state of an invoice
  * @access Public
  */
-router.put('/:id/state', updateInvoiceState);
+router.put('/:id/state', [validateAuthUser], updateInvoiceState);
 
 /**
  * @route PUT /invoices/:id/quantity
  * @description Update the quantity of a product in an invoice
  * @access Public
  */
-router.put('/:id/quantity', updateInvoiceQuantity);
+router.put('/:id/quantity', [validateAuthUser], updateInvoiceQuantity);
 
 export default router;
