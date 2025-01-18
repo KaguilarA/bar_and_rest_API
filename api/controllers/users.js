@@ -1,6 +1,6 @@
 import BaseController from '../../utils/baseController.js';
 
-export default class UsersController extends BaseController {
+export default class UserController extends BaseController {
 
   /**
    * Activates a user.
