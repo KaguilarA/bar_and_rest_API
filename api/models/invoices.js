@@ -1,20 +1,20 @@
-import { BaseModel } from './../../utils/baseModel.js';
+import BaseModel from "./../../utils/baseModel.js";
 
 // Stored procedures for the invoice model.
 const proceduresIds = {
-  getAll: 'GetAllInvoices',
-  getById: 'GetInvoiceById',
-  getByState: 'GetInvoicesByState',
-  getTotal: 'GetInvoiceTotal',
-  register: 'CreateInvoice',
-  updateQuantity: 'UpdateProductQuantityInvoice',
-  updateState: 'UpdateInvoiceState',
+  getAll: "GetAllInvoices",
+  getById: "GetInvoiceById",
+  getByState: "GetInvoicesByState",
+  getTotal: "GetInvoiceTotal",
+  register: "CreateInvoice",
+  updateQuantity: "UpdateProductQuantityInvoice",
+  updateState: "UpdateInvoiceState",
 };
 
 /**
  * Class representing a product in an invoice.
  */
-class ProductInvoice {
+class ProductInvoice extends BaseModel {
   /**
    * Create a product invoice.
    * @param {Object} product - The product data.
@@ -25,8 +25,7 @@ class ProductInvoice {
    * @param {number} product.total - The total price of the product.
    */
   constructor({ id, name, quantity, price, total }) {
-    this.id = id;
-    this.name = name;
+    super({ id, name });
     this.quantity = quantity;
     this.price = price;
     this.total = total;
@@ -50,12 +49,20 @@ export default class InvoiceModel extends BaseModel {
    * @param {number} invoiceData.quantity The quantity of the product.
    * @param {number} invoiceData.total_amount The total amount of the invoice.
    */
-  constructor({ date_created, name, state, id, productId, products, quantity, total_amount }) {
-    super(id, undefined, date_created);
-    this.name = name;
+  constructor({
+    date_created,
+    dateCreated,
+    name,
+    state,
+    id,
+    productId,
+    products,
+    quantity,
+    total_amount,
+  }) {
+    super({ id, name, state, dateCreated: date_created || dateCreated });
     if (productId) this.productId = productId;
     if (quantity) this.quantity = quantity;
-    if (state) this.state = state;
     if (total_amount !== undefined) this.totalAmount = +total_amount;
     this.parseProducts(products);
   }
@@ -90,7 +97,10 @@ export default class InvoiceModel extends BaseModel {
    */
   parseProducts(products = []) {
     if (products.length > 0) {
-      this.products = Array.from(products, product => new ProductInvoice(product));
+      this.products = Array.from(
+        products,
+        (product) => new ProductInvoice(product)
+      );
     }
   }
 
@@ -100,15 +110,16 @@ export default class InvoiceModel extends BaseModel {
    */
   static async getAll() {
     try {
-      const [rows] = await InvoiceModel.storedProcedure(
+      const [rows] = await InvoiceModel.executeProcedure(
         proceduresIds.getAll,
         null,
-        invoices => Array.from(invoices, invoice => new InvoiceModel(invoice))
+        (invoices) =>
+          Array.from(invoices, (invoice) => new InvoiceModel(invoice))
       );
 
       return rows;
     } catch (err) {
-      throw new Error('Error while fetching invoices', err);
+      throw new Error("Error while fetching invoices", err);
     }
   }
 
@@ -119,15 +130,16 @@ export default class InvoiceModel extends BaseModel {
    */
   static async getById(id) {
     try {
-      const [rows] = await InvoiceModel.storedProcedure(
+      const [rows] = await InvoiceModel.executeProcedure(
         proceduresIds.getById,
         [id],
-        invoices => Array.from(invoices, invoice => new InvoiceModel(invoice))
+        (invoices) =>
+          Array.from(invoices, (invoice) => new InvoiceModel(invoice))
       );
 
       return rows;
     } catch (err) {
-      throw new Error('Error while fetching invoices', err);
+      throw new Error("Error while fetching invoices", err);
     }
   }
 
@@ -135,18 +147,19 @@ export default class InvoiceModel extends BaseModel {
    * Get invoices by state.
    * @param {string} state The state of the invoice.
    * @returns {Promise<Array>} The list of invoices.
-  */
+   */
   static async getByState(state) {
     try {
-      const [rows] = await InvoiceModel.storedProcedure(
+      const [rows] = await InvoiceModel.executeProcedure(
         proceduresIds.getByState,
         [state],
-        invoices => Array.from(invoices, invoice => new InvoiceModel(invoice))
+        (invoices) =>
+          Array.from(invoices, (invoice) => new InvoiceModel(invoice))
       );
 
       return rows;
     } catch (err) {
-      throw new Error('Error while fetching invoices', err);
+      throw new Error("Error while fetching invoices", err);
     }
   }
 
@@ -157,14 +170,11 @@ export default class InvoiceModel extends BaseModel {
    */
   static async getTotal(id) {
     try {
-      const [rows] = await InvoiceModel.storedProcedure(
-        proceduresIds.getTotal,
-        [id],
-      );
+      const [rows] = await InvoiceModel.executeProcedure(proceduresIds.getTotal, [id]);
 
       return rows[0];
     } catch (err) {
-      throw new Error('Error while fetching invoice total', err);
+      throw new Error("Error while fetching invoice total", err);
     }
   }
 
@@ -177,15 +187,19 @@ export default class InvoiceModel extends BaseModel {
    */
   static async register(name, productId, quantity) {
     try {
-      const { registerParams } = new InvoiceModel({ name, productId, quantity });
-      const { affectedRows } = await InvoiceModel.storedProcedure(
+      const { registerParams } = new InvoiceModel({
+        name,
+        productId,
+        quantity,
+      });
+      const { affectedRows } = await InvoiceModel.executeProcedure(
         proceduresIds.register,
-        registerParams,
+        registerParams
       );
 
       if (affectedRows === 1) return { saved: true };
     } catch (err) {
-      throw new Error('Error while registering invoice', err);
+      throw new Error("Error while registering invoice", err);
     }
   }
 
@@ -198,15 +212,19 @@ export default class InvoiceModel extends BaseModel {
    */
   static async updateQuantity(id, productId, quantity) {
     try {
-      const { updateQuantityParams } = new InvoiceModel({ id, productId, quantity });
-      const { affectedRows } = await InvoiceModel.storedProcedure(
+      const { updateQuantityParams } = new InvoiceModel({
+        id,
+        productId,
+        quantity,
+      });
+      const { affectedRows } = await InvoiceModel.executeProcedure(
         proceduresIds.updateQuantity,
-        updateQuantityParams,
+        updateQuantityParams
       );
 
       if (affectedRows === 1) return { quantityUpdated: true };
     } catch (err) {
-      throw new Error('Error while updating invoice quantity', err);
+      throw new Error("Error while updating invoice quantity", err);
     }
   }
 
@@ -219,13 +237,13 @@ export default class InvoiceModel extends BaseModel {
   static async updateState(id, state) {
     try {
       const { updateStateParams } = new InvoiceModel({ id, state });
-      const { affectedRows } = await InvoiceModel.storedProcedure(
+      const { affectedRows } = await InvoiceModel.executeProcedure(
         proceduresIds.updateState,
-        updateStateParams,
+        updateStateParams
       );
       if (affectedRows === 1) return { invoiceUpdated: true };
     } catch (err) {
-      throw new Error('Error while updating invoice state', err);
+      throw new Error("Error while updating invoice state", err);
     }
   }
 }
