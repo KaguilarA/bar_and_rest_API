@@ -1,4 +1,4 @@
-import BaseModel from './../../utils/baseModel.js';
+import BaseModel from '../../utils/baseModel.js';
 
 // Stored procedures for the product model.
 const proceduresIds = {
@@ -16,7 +16,7 @@ const proceduresIds = {
  * ProductModel class that provides common methods for interacting with the products entity.
  * @extends BaseModel
  */
-export default class ProductModel extends BaseModel {
+export default class ProductModelMySQL extends BaseModel {
 
   /**
    * Constructor for the ProductModel class.
@@ -72,22 +72,22 @@ export default class ProductModel extends BaseModel {
   /**
    * Parses an array of product data and returns an array of ProductModel instances.
    * @param {Array<Object>} data - The array of product data to parse.
-   * @returns {Array<ProductModel>} An array of ProductModel instances.
+   * @returns {Array<ProductModelMySQL>} An array of ProductModel instances.
    */
   static parseData(data) {
-    return  Array.from(data, value => new ProductModel(value));
+    return  Array.from(data, value => new ProductModelMySQL(value));
   }
 
   /**
    * Gets all products.
-   * @returns {Promise<ProductModel[]>} The list of products.
+   * @returns {Promise<ProductModelMySQL[]>} The list of products.
    */
   static async getAll() {
     try {
-      const [rows] = await ProductModel.executeProcedure(
+      const [rows] = await ProductModelMySQL.executeProcedure(
         proceduresIds.getAll,
         null,
-        ProductModel.parseData
+        ProductModelMySQL.parseData
       );
 
       return rows;
@@ -99,14 +99,14 @@ export default class ProductModel extends BaseModel {
   /**
    * Gets a product by ID.
    * @param {number} id The ID of the product.
-   * @returns {Promise<ProductModel>} The product data.
+   * @returns {Promise<ProductModelMySQL>} The product data.
    */
   static async getById(id) {
     try {
-      const [rows] = await ProductModel.executeProcedure(
+      const [rows] = await ProductModelMySQL.executeProcedure(
         proceduresIds.getById,
         [id],
-        ProductModel.parseData
+        ProductModelMySQL.parseData
       );
 
       return rows[0];
@@ -118,14 +118,14 @@ export default class ProductModel extends BaseModel {
   /**
    * Gets products by type.
    * @param {boolean} state The state of the products to fetch.
-   * @returns {Promise<ProductModel[]>} The list of products with the specified state.
+   * @returns {Promise<ProductModelMySQL[]>} The list of products with the specified state.
    */
   static async getByState(state) {
     try {
-      const [rows] = await ProductModel.executeProcedure(
+      const [rows] = await ProductModelMySQL.executeProcedure(
         proceduresIds.getByState,
         [state],
-        ProductModel.parseData
+        ProductModelMySQL.parseData
       );
 
       return rows;
@@ -137,14 +137,14 @@ export default class ProductModel extends BaseModel {
   /**
    * Gets products by type.
    * @param {string} type The type of the products to fetch.
-   * @returns {Promise<ProductModel[]>} The list of products with the specified type.
+   * @returns {Promise<ProductModelMySQL[]>} The list of products with the specified type.
    */
   static async getByType(type) {
     try {
-      const [rows] = await ProductModel.executeProcedure(
+      const [rows] = await ProductModelMySQL.executeProcedure(
         proceduresIds.getByType,
         [type],
-        ProductModel.parseData
+        ProductModelMySQL.parseData
       );
 
       return rows;
@@ -160,8 +160,8 @@ export default class ProductModel extends BaseModel {
    */
   static async register(productData) {
     try {
-      const { registerParams } = new ProductModel(productData);
-      const { affectedRows } = await ProductModel.executeProcedure(proceduresIds.register, registerParams);
+      const { registerParams } = new ProductModelMySQL(productData);
+      const { affectedRows } = await ProductModelMySQL.executeProcedure(proceduresIds.register, registerParams);
 
       if (affectedRows === 1) return { saved: true };
     } catch (err) {
@@ -176,8 +176,8 @@ export default class ProductModel extends BaseModel {
    */
   static async update(productData) {
     try {
-      const { updateParams } = new ProductModel(productData);
-      const { affectedRows } = await ProductModel.executeProcedure(
+      const { updateParams } = new ProductModelMySQL(productData);
+      const { affectedRows } = await ProductModelMySQL.executeProcedure(
         proceduresIds.update,
         updateParams
       );
@@ -196,7 +196,7 @@ export default class ProductModel extends BaseModel {
    */
   static async updateState(productId, state) {
     try {
-      const { affectedRows } = await ProductModel.executeProcedure(
+      const { affectedRows } = await ProductModelMySQL.executeProcedure(
         proceduresIds.updateState,
         [productId, state]
       );
@@ -215,7 +215,7 @@ export default class ProductModel extends BaseModel {
    */
   static async updateStock(productId, stock) {
     try {
-      const { affectedRows } = await ProductModel.executeProcedure(
+      const { affectedRows } = await ProductModelMySQL.executeProcedure(
         proceduresIds.updateStock,
         [productId, stock]
       );

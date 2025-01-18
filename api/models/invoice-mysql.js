@@ -1,4 +1,4 @@
-import BaseModel from "./../../utils/baseModel.js";
+import BaseModel from "../../utils/baseModel.js";
 
 // Stored procedures for the invoice model.
 const proceduresIds = {
@@ -36,7 +36,7 @@ class ProductInvoice extends BaseModel {
  * Class representing an invoice.
  * @extends BaseModel
  */
-export default class InvoiceModel extends BaseModel {
+export default class InvoiceModelMySQL extends BaseModel {
   /**
    * Create an invoice.
    * @param {Object} invoiceData The invoice data.
@@ -110,11 +110,11 @@ export default class InvoiceModel extends BaseModel {
    */
   static async getAll() {
     try {
-      const [rows] = await InvoiceModel.executeProcedure(
+      const [rows] = await InvoiceModelMySQL.executeProcedure(
         proceduresIds.getAll,
         null,
         (invoices) =>
-          Array.from(invoices, (invoice) => new InvoiceModel(invoice))
+          Array.from(invoices, (invoice) => new InvoiceModelMySQL(invoice))
       );
 
       return rows;
@@ -130,11 +130,11 @@ export default class InvoiceModel extends BaseModel {
    */
   static async getById(id) {
     try {
-      const [rows] = await InvoiceModel.executeProcedure(
+      const [rows] = await InvoiceModelMySQL.executeProcedure(
         proceduresIds.getById,
         [id],
         (invoices) =>
-          Array.from(invoices, (invoice) => new InvoiceModel(invoice))
+          Array.from(invoices, (invoice) => new InvoiceModelMySQL(invoice))
       );
 
       return rows;
@@ -150,11 +150,11 @@ export default class InvoiceModel extends BaseModel {
    */
   static async getByState(state) {
     try {
-      const [rows] = await InvoiceModel.executeProcedure(
+      const [rows] = await InvoiceModelMySQL.executeProcedure(
         proceduresIds.getByState,
         [state],
         (invoices) =>
-          Array.from(invoices, (invoice) => new InvoiceModel(invoice))
+          Array.from(invoices, (invoice) => new InvoiceModelMySQL(invoice))
       );
 
       return rows;
@@ -170,7 +170,7 @@ export default class InvoiceModel extends BaseModel {
    */
   static async getTotal(id) {
     try {
-      const [rows] = await InvoiceModel.executeProcedure(proceduresIds.getTotal, [id]);
+      const [rows] = await InvoiceModelMySQL.executeProcedure(proceduresIds.getTotal, [id]);
 
       return rows[0];
     } catch (err) {
@@ -187,12 +187,12 @@ export default class InvoiceModel extends BaseModel {
    */
   static async register(name, productId, quantity) {
     try {
-      const { registerParams } = new InvoiceModel({
+      const { registerParams } = new InvoiceModelMySQL({
         name,
         productId,
         quantity,
       });
-      const { affectedRows } = await InvoiceModel.executeProcedure(
+      const { affectedRows } = await InvoiceModelMySQL.executeProcedure(
         proceduresIds.register,
         registerParams
       );
@@ -212,12 +212,12 @@ export default class InvoiceModel extends BaseModel {
    */
   static async updateQuantity(id, productId, quantity) {
     try {
-      const { updateQuantityParams } = new InvoiceModel({
+      const { updateQuantityParams } = new InvoiceModelMySQL({
         id,
         productId,
         quantity,
       });
-      const { affectedRows } = await InvoiceModel.executeProcedure(
+      const { affectedRows } = await InvoiceModelMySQL.executeProcedure(
         proceduresIds.updateQuantity,
         updateQuantityParams
       );
@@ -236,8 +236,8 @@ export default class InvoiceModel extends BaseModel {
    */
   static async updateState(id, state) {
     try {
-      const { updateStateParams } = new InvoiceModel({ id, state });
-      const { affectedRows } = await InvoiceModel.executeProcedure(
+      const { updateStateParams } = new InvoiceModelMySQL({ id, state });
+      const { affectedRows } = await InvoiceModelMySQL.executeProcedure(
         proceduresIds.updateState,
         updateStateParams
       );

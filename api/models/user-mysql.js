@@ -1,4 +1,4 @@
-import BaseModel from "./../../utils/baseModel.js";
+import BaseModel from "../../utils/baseModel.js";
 
 // Stored procedures for the user model.
 const proceduresIds = {
@@ -18,7 +18,7 @@ const proceduresIds = {
  * This model extends BaseModel and uses its utilities to call stored procedures.
  * @extends BaseModel
  */
-export default class UserModel extends BaseModel {
+export default class UserModelMySQL extends BaseModel {
   /**
    * Constructor for the UserModel class.
    * Ensures required fields are set and validates the structure of input data.
@@ -74,10 +74,10 @@ export default class UserModel extends BaseModel {
   /**
    * Parses an array of product data and returns an array of UserModel instances.
    * @param {Array<Object>} data - The array of product data to parse.
-   * @returns {Array<UserModel>} An array of UserModel instances.
+   * @returns {Array<UserModelMySQL>} An array of UserModel instances.
    */
   static parseData(data) {
-    return Array.from(data, value => new UserModel(value));
+    return Array.from(data, value => new UserModelMySQL(value));
   }
 
   /**
@@ -86,10 +86,10 @@ export default class UserModel extends BaseModel {
    */
   static async getAll() {
     try {
-      const [rows] = await UserModel.executeProcedure(
+      const [rows] = await UserModelMySQL.executeProcedure(
         proceduresIds.getAll,
         null,
-        UserModel.parseData
+        UserModelMySQL.parseData
       );
 
       return rows;
@@ -105,10 +105,10 @@ export default class UserModel extends BaseModel {
    */
   static async getById(userId) {
     try {
-      const [rows] = await UserModel.executeProcedure(
+      const [rows] = await UserModelMySQL.executeProcedure(
         proceduresIds.getById,
         [userId],
-        UserModel.parseData
+        UserModelMySQL.parseData
       );
 
       return rows[0];
@@ -124,10 +124,10 @@ export default class UserModel extends BaseModel {
    */
   static async getByState(state) {
     try {
-      const [rows] = await UserModel.executeProcedure(
+      const [rows] = await UserModelMySQL.executeProcedure(
         proceduresIds.getByState,
         [state],
-        UserModel.parseData
+        UserModelMySQL.parseData
       );
 
       return rows;
@@ -143,8 +143,8 @@ export default class UserModel extends BaseModel {
    */
   static async register(userData) {
     try {
-      const { registerParams } = new UserModel(userData);
-      const { affectedRows } = await UserModel.executeProcedure(
+      const { registerParams } = new UserModelMySQL(userData);
+      const { affectedRows } = await UserModelMySQL.executeProcedure(
         proceduresIds.register,
         registerParams
       );
@@ -162,8 +162,8 @@ export default class UserModel extends BaseModel {
    */
   static async update(userData) {
     try {
-      const { updateParams } = new UserModel(userData);
-      const { affectedRows } = await UserModel.executeProcedure(
+      const { updateParams } = new UserModelMySQL(userData);
+      const { affectedRows } = await UserModelMySQL.executeProcedure(
         proceduresIds.update,
         updateParams
       );
@@ -182,8 +182,8 @@ export default class UserModel extends BaseModel {
    */
   static async updatePassword(username, password) {
     try {
-      const { authParams } = new UserModel({ username, password });
-      const { affectedRows } = await UserModel.executeProcedure(
+      const { authParams } = new UserModelMySQL({ username, password });
+      const { affectedRows } = await UserModelMySQL.executeProcedure(
         proceduresIds.updatePassword,
         authParams
       );
@@ -203,7 +203,7 @@ export default class UserModel extends BaseModel {
    */
   static async updateState(userId, state) {
     try {
-      const { affectedRows } = await UserModel.executeProcedure(
+      const { affectedRows } = await UserModelMySQL.executeProcedure(
         proceduresIds.updateState,
         [userId, state]
       );
@@ -222,8 +222,8 @@ export default class UserModel extends BaseModel {
    */
   static async validatePassword(username, password) {
     try {
-      const { authParams } = new UserModel({ username, password });
-      const [rows] = await UserModel.executeProcedure(
+      const { authParams } = new UserModelMySQL({ username, password });
+      const [rows] = await UserModelMySQL.executeProcedure(
         proceduresIds.validatePassword,
         authParams
       );

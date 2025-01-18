@@ -1,8 +1,9 @@
 import express from 'express';
 
-import ProductModel from './models/products.js';
-import UserModel from './models/users.js';
-import InvoiceModel from './models/invoices.js';
+import ProductModelMySQL from './models/product-mysql.js';
+import ProductTypeModelMySQL from './models/productType-mysql.js';
+import UserModelMySQL from './models/user-mysql.js';
+import InvoiceModelMySQL from './models/invoice-mysql.js';
 
 import UserRoutes from './routes/users.js';
 import ProductRoutes from './routes/products.js';
@@ -14,18 +15,18 @@ const router = express.Router();
  * @route /users
  * @description Routes for user-related operations
  */
-router.use('/users', UserRoutes(UserModel));
+router.use('/users', UserRoutes(UserModelMySQL));
 
 /**
  * @route /products
  * @description Routes for product-related operations
  */
-router.use('/products', ProductRoutes(ProductModel));
+router.use('/products', ProductRoutes(ProductModelMySQL));
 
 /**
  * @route /invoices
  * @description Routes for invoice-related operations
  */
-router.use('/invoices', InvoiceRoutes(InvoiceModel));
+router.use('/invoices', InvoiceRoutes(InvoiceModelMySQL));
 
 export default router;
