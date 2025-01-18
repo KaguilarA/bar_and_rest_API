@@ -1,4 +1,4 @@
-export function validateAuthUser(req, res, next) {
+export default function validateAuthUser(req, res, next) {
 
   next();
 }
