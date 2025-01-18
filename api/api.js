@@ -1,32 +1,37 @@
-import express from 'express';
+import express from "express";
+import UserRoutes from "./routes/users.js";
+import ProductRoutes from "./routes/products.js";
+import InvoiceRoutes from "./routes/invoices.js";
 
-import ProductModelMySQL from './models/product-mysql.js';
-import ProductTypeModelMySQL from './models/productType-mysql.js';
-import UserModelMySQL from './models/user-mysql.js';
-import InvoiceModelMySQL from './models/invoice-mysql.js';
+export default ({
+  businessModel,
+  invoiceModel,
+  permissionModel,
+  productModel,
+  productTypeModel,
+  promoModel,
+  statesModel,
+  userModel,
+}) => {
+  const router = express.Router();
 
-import UserRoutes from './routes/users.js';
-import ProductRoutes from './routes/products.js';
-import InvoiceRoutes from './routes/invoices.js';
+  /**
+   * @route /users
+   * @description Routes for user-related operations
+   */
+  router.use("/users", UserRoutes(userModel));
 
-const router = express.Router();
+  /**
+   * @route /products
+   * @description Routes for product-related operations
+   */
+  router.use("/products", ProductRoutes(productModel));
 
-/**
- * @route /users
- * @description Routes for user-related operations
- */
-router.use('/users', UserRoutes(UserModelMySQL));
+  /**
+   * @route /invoices
+   * @description Routes for invoice-related operations
+   */
+  router.use("/invoices", InvoiceRoutes(invoiceModel));
 
-/**
- * @route /products
- * @description Routes for product-related operations
- */
-router.use('/products', ProductRoutes(ProductModelMySQL));
-
-/**
- * @route /invoices
- * @description Routes for invoice-related operations
- */
-router.use('/invoices', InvoiceRoutes(InvoiceModelMySQL));
-
-export default router;
+  return router;
+};
