@@ -1,28 +1,27 @@
-import express from 'express';
-import morgan from 'morgan';
-import bodyParser from 'body-parser';
+import app from './app.js';
+
 import APIRoutes from './api/api.js';
+
+import ProductModelMySQL from './models/product-mysql.js';
+import ProductTypeModelMySQL from './models/productType-mysql.js';
+import UserModelMySQL from './models/user-mysql.js';
+import InvoiceModelMySQL from './models/invoice-mysql.js';
 
 // Load environment variables
 process.loadEnvFile();
 
-const app = express();
 const PORT = process.env.PORT || 3000;
-
-// Set the view engine to Pug
-app.set('view engine', 'pug');
-
-// Middleware to log HTTP requests
-app.use(morgan('dev'));
-
-// Middleware to parse URL-encoded bodies
-app.use(bodyParser.urlencoded({ extended: true }));
 
 /**
  * @route /api
  * @description Routes for API-related operations
  */
-app.use('/api', APIRoutes);
+app.use('/api', APIRoutes({
+  userModel: UserModelMySQL,
+  productModel: ProductModelMySQL,
+  productTypeModel: ProductTypeModelMySQL,
+  invoiceModel: InvoiceModelMySQL
+}));
 
 // Start the server
 app.listen(PORT, () => {
