@@ -72,6 +72,15 @@ export default class UserModel extends BaseModel {
   }
 
   /**
+   * Parses an array of product data and returns an array of UserModel instances.
+   * @param {Array<Object>} data - The array of product data to parse.
+   * @returns {Array<UserModel>} An array of UserModel instances.
+   */
+  static parseData(data) {
+    return Array.from(data, value => new UserModel(value));
+  }
+
+  /**
    * Gets all users.
    * @returns {Promise<Array>} The list of users.
    */
@@ -80,7 +89,7 @@ export default class UserModel extends BaseModel {
       const [rows] = await UserModel.executeProcedure(
         proceduresIds.getAll,
         null,
-        (users) => Array.from(users, (user) => new UserModel(user))
+        UserModel.parseData
       );
 
       return rows;
@@ -99,7 +108,7 @@ export default class UserModel extends BaseModel {
       const [rows] = await UserModel.executeProcedure(
         proceduresIds.getById,
         [userId],
-        (users) => Array.from(users, (user) => new UserModel(user))
+        UserModel.parseData
       );
 
       return rows[0];
@@ -118,7 +127,7 @@ export default class UserModel extends BaseModel {
       const [rows] = await UserModel.executeProcedure(
         proceduresIds.getByState,
         [state],
-        (users) => Array.from(users, (user) => new UserModel(user))
+        UserModel.parseData
       );
 
       return rows;
