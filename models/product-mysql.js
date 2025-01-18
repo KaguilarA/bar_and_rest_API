@@ -1,15 +1,15 @@
-import BaseModel from '../../utils/baseModel.js';
+import BaseModel from "../utils/baseModel.js";
 
 // Stored procedures for the product model.
 const proceduresIds = {
-  getAll: 'GetAllProducts',
-  getById: 'GetProductById',
-  getByState: 'GetProductsByState',
-  getByType: 'GetProductsByType',
-  register: 'CreateProduct',
-  update: 'UpdateProduct',
-  updateState: 'UpdateProductState',
-  updateStock: 'UpdateProductStock'
+  getAll: "GetAllProducts",
+  getById: "GetProductById",
+  getByState: "GetProductsByState",
+  getByType: "GetProductsByType",
+  register: "CreateProduct",
+  update: "UpdateProduct",
+  updateState: "UpdateProductState",
+  updateStock: "UpdateProductStock"
 }
 
 /**
@@ -92,7 +92,7 @@ export default class ProductModelMySQL extends BaseModel {
 
       return rows;
     } catch (err) {
-      throw new Error('Error while fetching products', err);
+      throw new Error("Error while fetching products", err);
     }
   }
 
@@ -111,7 +111,7 @@ export default class ProductModelMySQL extends BaseModel {
 
       return rows[0];
     } catch (err) {
-      throw new Error('Error while fetching product', err);
+      throw new Error("Error while fetching product", err);
     }
   }
 
@@ -130,7 +130,7 @@ export default class ProductModelMySQL extends BaseModel {
 
       return rows;
     } catch (err) {
-      throw new Error('Error while fetching products by state', err);
+      throw new Error("Error while fetching products by state", err);
     }
   }
 
@@ -149,7 +149,7 @@ export default class ProductModelMySQL extends BaseModel {
 
       return rows;
     } catch (err) {
-      throw new Error('Error while fetching products by type', err);
+      throw new Error("Error while fetching products by type", err);
     }
   }
 
@@ -165,7 +165,7 @@ export default class ProductModelMySQL extends BaseModel {
 
       if (affectedRows === 1) return { saved: true };
     } catch (err) {
-      throw new Error('Error while creating product', err);
+      throw new Error("Error while creating product", err);
     }
   }
 
@@ -184,7 +184,7 @@ export default class ProductModelMySQL extends BaseModel {
 
       if (affectedRows === 1) return { updated: true };
     } catch (err) {
-      throw new Error('Error while updating product', err);
+      throw new Error("Error while updating product", err);
     }
   }
 
@@ -203,7 +203,7 @@ export default class ProductModelMySQL extends BaseModel {
 
       if (affectedRows === 1) return { productState: state };
     } catch (err) {
-      throw new Error('Error while updating product state', err);
+      throw new Error("Error while updating product state", err);
     }
   }
 
@@ -222,7 +222,7 @@ export default class ProductModelMySQL extends BaseModel {
 
       if (affectedRows === 1) return { stockUpdated: true };
     } catch (err) {
-      throw new Error('Error while updating product stock', err);
+      throw new Error("Error while updating product stock", err);
     }
   }
 }
