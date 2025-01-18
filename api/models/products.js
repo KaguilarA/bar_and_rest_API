@@ -1,4 +1,4 @@
-import { BaseModel } from './../../utils/baseModel.js';
+import BaseModel from './../../utils/baseModel.js';
 
 // Stored procedures for the product model.
 const proceduresIds = {
@@ -17,6 +17,7 @@ const proceduresIds = {
  * @extends BaseModel
  */
 export default class ProductModel extends BaseModel {
+
   /**
    * Constructor for the ProductModel class.
    * @param {Object} productData The product data.
@@ -30,13 +31,26 @@ export default class ProductModel extends BaseModel {
    * @param {string} [productData.dateCreated] The creation date of the product.
    * @param {string} [productData.date_created] The creation date of the product.
    */
-  constructor({ name, type, imageUrl, image_url, stock, price, state, id, dateCreated, date_created }) {
-    super(id, state, (date_created || dateCreated));
-    this.name = name;
+  constructor({
+    id,
+    name,
+    description,
+    image_url,
+    stock = 1,
+    price,
+    state,
+    type,
+    date_created,
+    date_updated,
+    author_id
+  }) {
+    super({ id, name, state, date_created, date_updated });
+    if (description) this.description = description;
+    if (image_url) this.image_url = image_url;
+    if (stock) this.stock = parseInt(stock);
+    if (price) this.price = parseInt(price);
+    if (author_id) this.author_id = author_id;
     this.type = type;
-    this.imageUrl = imageUrl || image_url;
-    this.stock = +stock;
-    this.price = +price;
   }
 
   /**
@@ -44,7 +58,7 @@ export default class ProductModel extends BaseModel {
    * @returns {string[]} The registration parameters.
    */
   get registerParams() {
-    return [this.name, this.type, this.imageUrl, this.stock, this.price];
+    return [this.name, this.description, this.imageUrl, this.stock, this.price, this.state, this.type, this.author_id];
   }
 
   /**
@@ -56,15 +70,24 @@ export default class ProductModel extends BaseModel {
   }
 
   /**
+   * Parses an array of product data and returns an array of ProductModel instances.
+   * @param {Array<Object>} data - The array of product data to parse.
+   * @returns {Array<ProductModel>} An array of ProductModel instances.
+   */
+  static parseData(data) {
+    return  Array.from(data, value => new ProductModel(value));
+  }
+
+  /**
    * Gets all products.
    * @returns {Promise<ProductModel[]>} The list of products.
    */
   static async getAll() {
     try {
-      const [rows] = await ProductModel.storedProcedure(
+      const [rows] = await ProductModel.executeProcedure(
         proceduresIds.getAll,
         null,
-        products => Array.from(products, product => new ProductModel(product))
+        ProductModel.parseData
       );
 
       return rows;
@@ -80,10 +103,10 @@ export default class ProductModel extends BaseModel {
    */
   static async getById(id) {
     try {
-      const [rows] = await ProductModel.storedProcedure(
+      const [rows] = await ProductModel.executeProcedure(
         proceduresIds.getById,
         [id],
-        products => Array.from(products, product => new ProductModel(product))
+        ProductModel.parseData
       );
 
       return rows[0];
@@ -99,10 +122,10 @@ export default class ProductModel extends BaseModel {
    */
   static async getByState(state) {
     try {
-      const [rows] = await ProductModel.storedProcedure(
+      const [rows] = await ProductModel.executeProcedure(
         proceduresIds.getByState,
         [state],
-        products => Array.from(products, product => new ProductModel(product))
+        ProductModel.parseData
       );
 
       return rows;
@@ -118,10 +141,10 @@ export default class ProductModel extends BaseModel {
    */
   static async getByType(type) {
     try {
-      const [rows] = await ProductModel.storedProcedure(
+      const [rows] = await ProductModel.executeProcedure(
         proceduresIds.getByType,
         [type],
-        products => Array.from(products, product => new ProductModel(product))
+        ProductModel.parseData
       );
 
       return rows;
@@ -138,7 +161,7 @@ export default class ProductModel extends BaseModel {
   static async register(productData) {
     try {
       const { registerParams } = new ProductModel(productData);
-      const { affectedRows } = await ProductModel.storedProcedure(proceduresIds.register, registerParams);
+      const { affectedRows } = await ProductModel.executeProcedure(proceduresIds.register, registerParams);
 
       if (affectedRows === 1) return { saved: true };
     } catch (err) {
@@ -154,7 +177,7 @@ export default class ProductModel extends BaseModel {
   static async update(productData) {
     try {
       const { updateParams } = new ProductModel(productData);
-      const { affectedRows } = await ProductModel.storedProcedure(
+      const { affectedRows } = await ProductModel.executeProcedure(
         proceduresIds.update,
         updateParams
       );
@@ -173,7 +196,7 @@ export default class ProductModel extends BaseModel {
    */
   static async updateState(productId, state) {
     try {
-      const { affectedRows } = await ProductModel.storedProcedure(
+      const { affectedRows } = await ProductModel.executeProcedure(
         proceduresIds.updateState,
         [productId, state]
       );
@@ -192,7 +215,7 @@ export default class ProductModel extends BaseModel {
    */
   static async updateStock(productId, stock) {
     try {
-      const { affectedRows } = await ProductModel.storedProcedure(
+      const { affectedRows } = await ProductModel.executeProcedure(
         proceduresIds.updateStock,
         [productId, stock]
       );
