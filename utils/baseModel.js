@@ -20,12 +20,15 @@ export default class BaseModel {
    * @param {Object} params - The parameters for the model.
    * @param {number} params.id - The ID of the model.
    * @param {string} params.name - The name of the model.
+   * @param {string} params.description - The description of the model.
    * @param {string} params.state - The state of the model.
    * @param {string} params.dateCreated - The creation date of the model.
    */
-  constructor({ id, name, state, date_created, date_updated }) {
+  constructor({ id, name, description, image_url, state, date_created, date_updated }) {
     if (id) this.id = id;
     if (name) this.name = name;
+    if (description) this.description = description;
+    if (image_url) this.image_url = image_url;
     if (state) this.state = state;
     if (date_created) this.date_created = new Date(date_created);
     if (date_updated) this.date_created = new Date(date_updated);

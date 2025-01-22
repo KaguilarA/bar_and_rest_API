@@ -40,17 +40,17 @@ export default class ProductModelMySQL extends BaseModel {
     price,
     state,
     type,
+    on_landing,
     date_created,
     date_updated,
     author_id
   }) {
-    super({ id, name, state, date_created, date_updated });
-    if (description) this.description = description;
-    if (image_url) this.image_url = image_url;
+    super({ id, name, description, image_url, state, date_created, date_updated });
+    this.type = type;
     if (stock) this.stock = parseInt(stock);
     if (price) this.price = parseInt(price);
+    if (on_landing) this.on_landing = on_landing;
     if (author_id) this.author_id = author_id;
-    this.type = type;
   }
 
   /**

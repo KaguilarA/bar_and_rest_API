@@ -72,9 +72,9 @@ export default class UserModelMySQL extends BaseModel {
   }
 
   /**
-   * Parses an array of product data and returns an array of UserModel instances.
+   * Parses an array of product data and returns an array of UserModelMySQL instances.
    * @param {Array<Object>} data - The array of product data to parse.
-   * @returns {Array<UserModelMySQL>} An array of UserModel instances.
+   * @returns {Array<UserModelMySQL>} An array of UserModelMySQL instances.
    */
   static parseData(data) {
     return Array.from(data, value => new UserModelMySQL(value));
