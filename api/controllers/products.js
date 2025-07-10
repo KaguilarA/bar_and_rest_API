@@ -74,7 +74,7 @@ export default class ProductController extends BaseController {
   getProductById = async (req, res) => {
     try {
       const { id } = req.params;
-      if (!id) res.status(400).json({ message: 'Product ID is required' });
+      if (!id) return res.status(400).json({ message: 'Product ID is required' });
       const product = await this.model.getById(parseInt(id));
       res.status(200).json(product);
     } catch (err) {

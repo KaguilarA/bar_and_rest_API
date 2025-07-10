@@ -2,6 +2,7 @@ import express from "express";
 
 import UserRoutes from "./routes/users.js";
 import ProductRoutes from "./routes/products.js";
+import ProductTypeRoutes from "./routes/product-types.js";
 import InvoiceRoutes from "./routes/invoices.js";
 
 export default ({
@@ -21,6 +22,12 @@ export default ({
    * @description Routes for user-related operations
    */
   router.use("/users", UserRoutes(userModel));
+
+  /**
+   * @route /product-types
+   * @description Routes for product type-related operations
+   */
+  router.use("/product-types", ProductTypeRoutes(productTypeModel));
 
   /**
    * @route /products

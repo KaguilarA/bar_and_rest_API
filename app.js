@@ -1,8 +1,13 @@
 import express from 'express';
+import cors from 'cors';
 import morgan from 'morgan';
 import bodyParser from 'body-parser';
 
 const app = express();
+
+app.use(cors());
+
+app.use(express.json());
 
 // Set the view engine to Pug
 app.set('view engine', 'pug');
