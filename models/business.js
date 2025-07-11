@@ -4,8 +4,7 @@ const businessSchema = new mongoose.Schema({
   name: {
     type: String,
     required: true,
-    unique: true,
-    index: true
+    unique: true
   },
   description: {
     type: String
@@ -37,8 +36,7 @@ const businessSchema = new mongoose.Schema({
   state: {
     type: mongoose.Schema.Types.ObjectId,
     ref: "State",
-    required: true,
-    index: true,
+    required: true
   },
 });
 

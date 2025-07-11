@@ -1,7 +1,10 @@
 import mongoose from "mongoose";
 
 const productSchema = new mongoose.Schema({
-  name: { type: String, required: true, index: true },
+  name: {
+    type: String,
+    required: true
+  },
   description: {
     type: String
   },
@@ -23,20 +26,17 @@ const productSchema = new mongoose.Schema({
   state: {
     type: mongoose.Schema.Types.ObjectId,
     ref: "State",
-    required: true,
-    index: true,
+    required: true
   },
   type: {
     type: mongoose.Schema.Types.ObjectId,
     ref: "ProductType",
-    required: true,
-    index: true,
+    required: true
   },
   author: {
     type: mongoose.Schema.Types.ObjectId,
     ref: "User",
-    required: true,
-    index: true,
+    required: true
   },
 });
 

@@ -3,8 +3,7 @@ import mongoose from "mongoose";
 const promoSchema = new mongoose.Schema({
   name: {
     type: String,
-    required: true,
-    index: true
+    required: true
   },
   description: {
     type: String
@@ -45,8 +44,7 @@ const promoSchema = new mongoose.Schema({
   state: {
     type: mongoose.Schema.Types.ObjectId,
     ref: "State",
-    required: true,
-    index: true,
+    required: true
   },
   author: {
     type: mongoose.Schema.Types.ObjectId,

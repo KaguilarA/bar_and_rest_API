@@ -25,8 +25,7 @@ const userSchema = new mongoose.Schema({
   state: {
     type: mongoose.Schema.Types.ObjectId,
     ref: "State",
-    required: true,
-    index: true,
+    required: true
   },
 });
 
