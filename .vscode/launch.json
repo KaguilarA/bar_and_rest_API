@@ -10,6 +10,13 @@
       "request": "launch",
       "command": "node --run dev",
       "cwd": "${workspaceFolder}"
+    },
+    {
+      "type": "node-terminal",
+      "name": "Run scripts locally",
+      "request": "launch",
+      "command": "node --run start",
+      "cwd": "${workspaceFolder}"
     }
   ]
 }
