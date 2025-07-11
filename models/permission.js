@@ -1,4 +1,4 @@
-import BaseModel from "../../utils/baseModel.js";
+import BaseModel from "../utils/baseModel.js";
 
 const proceduresIds = {
   addToUser: "AddPermissionToUser",
