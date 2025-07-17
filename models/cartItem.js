@@ -1,12 +1,6 @@
 import mongoose from "mongoose";
 
 const cartItemSchema = new mongoose.Schema({
-  cart: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: "Cart",
-    required: true,
-    index: true,
-  },
   product: {
     type: mongoose.Schema.Types.ObjectId,
     ref: "Product"
@@ -29,6 +23,8 @@ const cartItemSchema = new mongoose.Schema({
     ref: "State",
     required: true
   },
+}, {
+  _id: false
 });
 
 cartItemSchema.pre("validate", function (next) {

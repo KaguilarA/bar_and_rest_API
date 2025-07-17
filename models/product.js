@@ -1,43 +1,42 @@
 import mongoose from "mongoose";
+import baseModel from "../utils/baseModel.js";
 
 const productSchema = new mongoose.Schema({
+  ...baseModel,
   name: {
     type: String,
-    required: true
+    required: true,
   },
   description: {
-    type: String
+    type: String,
   },
   stock: {
     type: Number,
-    default: 0
+    default: 0,
   },
   on_landing: {
     type: Boolean,
-    default: false
-  },
-  date_created: {
-    type: Date,
-    default: Date.now
-  },
-  date_updated: {
-    type: Date
+    default: false,
   },
   state: {
     type: mongoose.Schema.Types.ObjectId,
     ref: "State",
-    required: true
+    required: true,
   },
   type: {
     type: mongoose.Schema.Types.ObjectId,
     ref: "ProductType",
-    required: true
+    required: true,
   },
   author: {
     type: mongoose.Schema.Types.ObjectId,
     ref: "User",
-    required: true
+    required: true,
   },
+  price: [{
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "Price"
+  }],
 });
 
 export default mongoose.model("Product", productSchema);

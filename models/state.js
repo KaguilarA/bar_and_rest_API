@@ -6,6 +6,11 @@ const stateSchema = new mongoose.Schema({
     required: true,
     unique: true
   },
+  type: [{
+    type: String,
+    enum: ["users", "business", "menu items", "cart"],
+    required: true
+  }],
 });
 
 export default mongoose.model("State", stateSchema);

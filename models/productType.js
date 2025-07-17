@@ -9,7 +9,7 @@ const productTypeSchema = new mongoose.Schema({
   has_stock: {
     type: Boolean,
     default: true
-  },
+  }
 });
 
 export default mongoose.model("ProductType", productTypeSchema);

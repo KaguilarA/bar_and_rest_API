@@ -4,39 +4,27 @@ const businessSchema = new mongoose.Schema({
   name: {
     type: String,
     required: true,
-    unique: true
+    unique: true,
   },
-  description: {
-    type: String
-  },
+  description: String,
   email: {
     type: String,
     required: true,
-    unique: true
+    unique: true,
   },
   phone: {
     type: String,
-    required: true
+    required: true,
   },
-  images_base_url: {
-    type: String
-  },
-  instagram_url: {
-    type: String
-  },
-  facebook_url: {
-    type: String
-  },
-  whatsapp_url: {
-    type: String
-  },
-  twitter_url: {
-    type: String
-  },
+  images_base_url: String,
+  instagram_url: String,
+  facebook_url: String,
+  whatsapp_url: String,
+  x_url: String,
   state: {
     type: mongoose.Schema.Types.ObjectId,
     ref: "State",
-    required: true
+    required: true,
   },
 });
 
