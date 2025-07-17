@@ -11,11 +11,6 @@ const userSchema = new mongoose.Schema(
     lastname: {
       type: String,
     },
-    email: {
-      type: String,
-      required: true,
-      unique: true,
-    },
     username: {
       type: String,
       required: true,
@@ -33,15 +28,13 @@ const userSchema = new mongoose.Schema(
     images: [
       {
         type: mongoose.Schema.Types.ObjectId,
-        ref: "Images",
-        required: true,
+        ref: "Images"
       },
     ],
     permission_list: [
       {
         type: mongoose.Schema.Types.ObjectId,
         ref: "Permission",
-        required: true,
       },
     ],
   },
