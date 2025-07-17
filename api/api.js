@@ -1,13 +1,15 @@
 import express from "express";
 
-import UserRoutes from "./routes/users.js";
-import ProductRoutes from "./routes/products.js";
-import ProductTypeRoutes from "./routes/product-types.js";
-import InvoiceRoutes from "./routes/invoices.js";
+import CartRoutes from "./routes/cart.js";
+import PermissionRoutes from "./routes/permission.js";
+import ProductRoutes from "./routes/product.js";
+import UserRoutes from "./routes/user.js";
+import StateRoutes from "./routes/state.js";
+
 
 export default ({
   businessModel,
-  invoiceModel,
+  cartModel,
   permissionModel,
   productModel,
   productTypeModel,
@@ -18,28 +20,34 @@ export default ({
   const router = express.Router();
 
   /**
-   * @route /users
-   * @description Routes for user-related operations
+   * @route /cart
+   * @description Routes for invoice-related operations
    */
-  router.use("/users", UserRoutes(userModel));
+  router.use("/cart", CartRoutes(cartModel));
 
   /**
-   * @route /product-types
-   * @description Routes for product type-related operations
+   * @route /permission
+   * @description Routes for user-related operations
    */
-  router.use("/product-types", ProductTypeRoutes(productTypeModel));
+  router.use("/permission", PermissionRoutes(permissionModel));
 
   /**
    * @route /products
    * @description Routes for product-related operations
    */
-  router.use("/products", ProductRoutes(productModel));
+  router.use("/product", ProductRoutes([productModel, productTypeModel]));
 
   /**
-   * @route /invoices
-   * @description Routes for invoice-related operations
+   * @route /states
+   * @description Routes for user-related operations
    */
-  router.use("/invoices", InvoiceRoutes(invoiceModel));
+  router.use("/state", StateRoutes(statesModel));
+
+  /**
+   * @route /users
+   * @description Routes for user-related operations
+   */
+  router.use("/user", UserRoutes(userModel));
 
   return router;
 };

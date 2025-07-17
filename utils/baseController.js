@@ -7,7 +7,7 @@ export default class BaseController {
 
   /**
    * Constructor for the BaseModel class.
-   * @param {BaseModel} model - The parameters for the model.
+   * @param {any} model - The parameters for the model.
    */
   constructor(model) {
     this.model = model;

@@ -15,7 +15,7 @@ export default (model) => {
   router.get(
     "/",
     [validateAuthUser, validateUserPermissions],
-    controller.getAll
+    controller.getAll.bind(controller)
   );
 
   /**
@@ -26,7 +26,7 @@ export default (model) => {
   router.get(
     "/business",
     [validateAuthUser, validateUserPermissions],
-    controller.getBusinessStates
+    controller.getBusinessStates.bind(controller)
   );
 
   /**
@@ -36,7 +36,7 @@ export default (model) => {
   router.get(
     "/carts",
     [validateAuthUser, validateUserPermissions],
-    controller.getUsersStates
+    controller.getUsersStates.bind(controller)
   );
 
   /**
@@ -47,7 +47,7 @@ export default (model) => {
   router.get(
     "/menu-items",
     [validateAuthUser, validateUserPermissions],
-    controller.getMenuItemsStates
+    controller.getMenuItemsStates.bind(controller)
   );
 
   /**
@@ -58,7 +58,7 @@ export default (model) => {
   router.get(
     "/users",
     [validateAuthUser, validateUserPermissions],
-    controller.getUsersStates
+    controller.getUsersStates.bind(controller)
   );
 
   /**
@@ -69,7 +69,7 @@ export default (model) => {
   router.post(
     "/",
     [validateAuthUser, validateUserPermissions],
-    controller.register
+    controller.register.bind(controller)
   );
 
   return router;
