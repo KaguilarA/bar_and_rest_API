@@ -1,7 +1,7 @@
 import express from "express";
 import validateAuthUser from "../../middlewares/auth.js";
 import validateUserPermissions from "../../middlewares/permissions.js";
-import UserController from "./../controllers/users.js";
+import UserController from "../controllers/user.js";
 
 export default (model) => {
   const controller = new UserController(model);
