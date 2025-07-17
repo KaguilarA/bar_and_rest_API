@@ -12,35 +12,65 @@ export default (model) => {
    * @description Get all product types
    * @access Public
    */
-  router.get("/", controller.getAll);
+  router.get(
+    "/",
+    [validateAuthUser, validateUserPermissions],
+    controller.getAll
+  );
 
   /**
    * @route GET //menu-items
    * @description Get all product types
    * @access Public
    */
-  router.get("/business", controller.getBusinessStates);
+  router.get(
+    "/business",
+    [validateAuthUser, validateUserPermissions],
+    controller.getBusinessStates
+  );
+
+  /**
+   * @route GET /cart
+   * @description Get all cart states
+   */
+  router.get(
+    "/carts",
+    [validateAuthUser, validateUserPermissions],
+    controller.getUsersStates
+  );
 
   /**
    * @route GET /menu-items
    * @description Get all product types
    * @access Public
    */
-  router.get("/menu-items", controller.getMenuItemsStates);
+  router.get(
+    "/menu-items",
+    [validateAuthUser, validateUserPermissions],
+    controller.getMenuItemsStates
+  );
 
   /**
    * @route GET /users
    * @description Get all product types
    * @access Public
    */
-  router.get("/users", controller.getUsersStates);
+  router.get(
+    "/users",
+    [validateAuthUser, validateUserPermissions],
+    controller.getUsersStates
+  );
 
   /**
    * @route POST /
    * @description Creates a new user
    * @access Public
    */
-  router.post("/", controller.register);
+  router.post(
+    "/",
+    [validateAuthUser, validateUserPermissions],
+    controller.register
+  );
 
   return router;
-};
+}

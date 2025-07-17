@@ -3,7 +3,7 @@ import BaseController from "../../utils/baseController.js";
 export default class extends BaseController {
 
   /**
-   * Gets all states.
+   * Gets all states
    * @param {Object} req The request object.
    * @param {Object} res The response object.
    */
@@ -26,6 +26,21 @@ export default class extends BaseController {
   getBusinessStates = async (req, res) => {
     try {
       const states = await this.model.find({ type: "business" }).select("-type");
+      res.status(200).json(states);
+    } catch (err) {
+      res.status(404).json({ message: err.message });
+    }
+  }
+
+  /**
+   * Gets all state for the cart.
+   * @param {Object} req The request object.
+   * @param {Object} res The response object.
+   *  @return {Promise<void>}|
+   */
+  getCartStates = async (req, res) => {
+    try {
+      const states = await this.model.find({ type: "cart" }).select("-type");
       res.status(200).json(states);
     } catch (err) {
       res.status(404).json({ message: err.message });
