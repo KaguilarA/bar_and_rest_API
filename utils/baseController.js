@@ -1,5 +1,3 @@
-import BaseModel from './baseModel.js';
-
 /**
  * BaseController class that provides common methods for interacting with the model.
  * Designed to be extended by specific controllers for CRUD operations using the model.
