@@ -14,9 +14,8 @@ export default (model) => {
    */
   router.get(
     "/",
-    [validateAuthUser],
-    validateUserPermissions,
-    controller.getAllUsers
+    [validateAuthUser, validateUserPermissions],
+    controller.getAll
   );
 
   /**
@@ -27,7 +26,7 @@ export default (model) => {
   router.get(
     "/active",
     [validateAuthUser, validateUserPermissions],
-    controller.getActiveUsers
+    controller.getActive
   );
 
   /**
@@ -38,7 +37,7 @@ export default (model) => {
   router.get(
     "/disabled",
     [validateAuthUser, validateUserPermissions],
-    controller.getDisabledUsers
+    controller.getDisabled
   );
 
   /**
@@ -49,7 +48,7 @@ export default (model) => {
   router.get(
     "/:id",
     [validateAuthUser, validateUserPermissions],
-    controller.getUserById
+    controller.getById
   );
 
   /**
@@ -57,7 +56,7 @@ export default (model) => {
    * @description Creates a new user
    * @access Public
    */
-  router.post("/", controller.createUser);
+  router.post("/", controller.register);
 
   /**
    * @route POST /users/validate-password
@@ -96,7 +95,7 @@ export default (model) => {
   router.put(
     "/:id/password",
     [validateAuthUser, validateUserPermissions],
-    controller.updateUserPassword
+    controller.updatePassword
   );
 
   /**

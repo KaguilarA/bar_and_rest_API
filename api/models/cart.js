@@ -1,8 +1,6 @@
 import mongoose from "mongoose";
-import baseModel from "../utils/baseModel.js";
 
 const cartSchema = new mongoose.Schema({
-  ...baseModel,
   name: String,
   user: {
     type: mongoose.Schema.Types.ObjectId,
@@ -20,6 +18,8 @@ const cartSchema = new mongoose.Schema({
       ref: "CartItem",
     },
   ],
+}, {
+  timestamps: true,
 });
 
 export default mongoose.model("Cart", cartSchema);

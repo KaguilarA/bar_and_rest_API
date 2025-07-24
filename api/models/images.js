@@ -1,8 +1,6 @@
 import mongoose from "mongoose";
-import baseModel from "../utils/baseModel.js";
 
 const imageSchema = new mongoose.Schema({
-  ...baseModel,
   image_url: {
     type: String,
     required: true
@@ -11,6 +9,8 @@ const imageSchema = new mongoose.Schema({
     type: Boolean,
     default: false
   }
+}, {
+  timestamps: true
 });
 
 export default mongoose.model("Image", imageSchema);

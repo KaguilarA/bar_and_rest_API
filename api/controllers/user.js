@@ -1,6 +1,6 @@
 import BaseController from '../../utils/baseController.js';
 
-export default class UserController extends BaseController {
+export default class extends BaseController {
 
   /**
    * Activates a user.
@@ -10,9 +10,10 @@ export default class UserController extends BaseController {
   activateUser = async (req, res) => {
     try {
       const { id } = req.params;
-      if (!id) res.status(400).json({ message: 'User ID is required' });
-      const user = await this.model.updateState(+id, true);
-      res.status(200).json(user);
+      console.log('Activating user with ID:', id);
+      // if (!id) res.status(400).json({ message: 'User ID is required' });
+      // const user = await this.model.updateState(+id, true);
+      // res.status(200).json(user);
     } catch (err) {
       res.status(404).json({ message: err.message });
     }
@@ -23,14 +24,12 @@ export default class UserController extends BaseController {
    * @param {Object} req The request object.
    * @param {Object} res The response object.
    */
-  createUser = async (req, res) => {
+  register = async (req, res) => {
     try {
-      const user = req.body;
-      if (!user.name || !user.lastname || !user.username || !user.password) {
-        res.status(400).json({ message: 'All user fields are required' });
-      }
-      const newUser = await this.model.register(user);
-      res.status(201).json(newUser);
+      const newModel = new this.model({ ...req.body });
+      const registeredModel = await newModel.save();
+
+      res.status(201).json(registeredModel);
     } catch (err) {
       res.status(409).json({ message: err.message });
     }
@@ -44,9 +43,10 @@ export default class UserController extends BaseController {
   disableUser = async (req, res) => {
     try {
       const { id } = req.params;
-      if (!id) res.status(400).json({ message: 'User ID is required' });
-      const user = await this.model.updateState(+id, false);
-      res.status(200).json(user);
+      console.log('Disabling user with ID:', id);
+      // if (!id) res.status(400).json({ message: 'User ID is required' });
+      // const user = await this.model.updateState(+id, false);
+      // res.status(200).json(user);
     } catch (err) {
       res.status(404).json({ message: err.message });
     }
@@ -57,10 +57,10 @@ export default class UserController extends BaseController {
    * @param {Object} req The request object.
    * @param {Object} res The response object.
    */
-  getAllUsers = async (req, res) => {
+  getAll = async (req, res) => {
     try {
-      const users = await this.model.getAll();
-      res.status(200).json(users);
+      // const users = await this.model.getAll();
+      // res.status(200).json(users);
     } catch (err) {
       res.status(404).json({ message: err.message });
     }
@@ -71,10 +71,10 @@ export default class UserController extends BaseController {
    * @param {Object} req The request object.
    * @param {Object} res The response object.
    */
-  getActiveUsers = async (req, res) => {
+  getActive = async (req, res) => {
     try {
-      const users = await this.model.getByState(true);
-      res.status(200).json(users);
+      // const users = await this.model.getByState(true);
+      // res.status(200).json(users);
     } catch (err) {
       res.status(404).json({ message: err.message });
     }
@@ -85,10 +85,10 @@ export default class UserController extends BaseController {
    * @param {Object} req The request object.
    * @param {Object} res The response object.
    */
-  getDisabledUsers = async (req, res) => {
+  getDisabled = async (req, res) => {
     try {
-      const users = await this.model.getByState(false);
-      res.status(200).json(users);
+      // const users = await this.model.getByState(false);
+      // res.status(200).json(users);
     } catch (err) {
       res.status(404).json({ message: err.message });
     }
@@ -99,12 +99,13 @@ export default class UserController extends BaseController {
    * @param {Object} req The request object.
    * @param {Object} res The response object.
    */
-  getUserById = async (req, res) => {
+  getById = async (req, res) => {
     try {
       const { id } = req.params;
-      if (!id) res.status(400).json({ message: 'User ID is required' });
-      const user = await this.model.getById(+id);
-      res.status(200).json(user);
+      console.log('Getting user with ID:', id);
+      // if (!id) res.status(400).json({ message: 'User ID is required' });
+      // const user = await this.model.getById(+id);
+      // res.status(200).json(user);
     } catch (err) {
       res.status(404).json({ message: err.message });
     }
@@ -119,9 +120,10 @@ export default class UserController extends BaseController {
     try {
       const user = req.body;
       const { id } = req.params;
-      if (!id) res.status(400).json({ message: 'User ID is required' });
-      const updatedUser = await this.model.update({ ...user, id: +id });
-      res.status(200).json(updatedUser);
+      console.log('Updating user with ID:', id, 'Data:', user);
+      // if (!id) res.status(400).json({ message: 'User ID is required' });
+      // const updatedUser = await this.model.update({ ...user, id: +id });
+      // res.status(200).json(updatedUser);
     } catch (err) {
       res.status(404).json({ message: err.message });
     }
@@ -132,12 +134,13 @@ export default class UserController extends BaseController {
    * @param {Object} req The request object.
    * @param {Object} res The response object.
    */
-  updateUserPassword = async (req, res) => {
+  updatePassword = async (req, res) => {
     try {
       const { username, password } = req.body;
-      if (!username || !password) res.status(400).json({ message: 'Username and password are required' });
-      const updatedUser = await this.model.updatePassword(username, password);
-      res.status(200).json(updatedUser);
+      console.log('Updating password for user:', username);
+      // if (!username || !password) res.status(400).json({ message: 'Username and password are required' });
+      // const updatedUser = await this.model.updatePassword(username, password);
+      // res.status(200).json(updatedUser);
     } catch (err) {
       res.status(404).json({ message: err.message });
     }
@@ -151,9 +154,10 @@ export default class UserController extends BaseController {
   validatePassword = async (req, res) => {
     try {
       const { username, password } = req.body;
-      if (!username || !password) res.status(400).json({ message: 'Username and password are required' });
-      const isValid = await this.model.validatePassword(username, password);
-      res.status(200).json(isValid);
+      console.log('Validating password for user:', username);
+      // if (!username || !password) res.status(400).json({ message: 'Username and password are required' });
+      // const isValid = await this.model.validatePassword(username, password);
+      // res.status(200).json(isValid);
     } catch (err) {
       res.status(404).json({ message: err.message });
     }

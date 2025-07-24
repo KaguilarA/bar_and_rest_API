@@ -1,6 +1,7 @@
 import BaseController from '../../utils/baseController.js';
+import exceptions from '../../utils/exceptions.js';
 
-export default class ProductController extends BaseController {
+export default class extends BaseController {
 
   /**
    * Activates a product.
@@ -74,9 +75,9 @@ export default class ProductController extends BaseController {
   getProductById = async (req, res) => {
     try {
       const { id } = req.params;
-      if (!id) return res.status(400).json({ message: 'Product ID is required' });
-      const product = await this.model.getById(parseInt(id));
-      res.status(200).json(product);
+      // if (!id) return res.status(400).json({ message: 'Product ID is required' });
+      // const product = await this.model.getById(parseInt(id));
+      res.status(200).json({hi: true});
     } catch (err) {
       res.status(404).json({ message: err.message });
     }
@@ -87,15 +88,23 @@ export default class ProductController extends BaseController {
    * @param {Object} req The request object.
    * @param {Object} res The response object.
    */
-  getProductByType = async (req, res) => {
+  getTypes = async (req, res) => {
     try {
-      const { type } = req.body;
-      if (!type) res.status(400).json({ message: 'Product type is required' });
-      const products = await this.model.getByType(type);
+      const products = await this.model[1].find({});
+
       res.status(200).json(products);
     } catch (err) {
       res.status(404).json({ message: err.message });
     }
+  }
+
+  /**
+   * Creates a new product type.
+   * @param {Object} req The request object.
+   * @param {Object} res The response object.
+   */
+  registerType(req, res) {
+    exceptions.register(this.model[1], req.body, res.status.bind(res));
   }
 
   /**

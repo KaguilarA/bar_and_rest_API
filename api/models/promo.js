@@ -1,8 +1,6 @@
 import mongoose from "mongoose";
-import baseModel from "../utils/baseModel.js";
 
 const promoSchema = new mongoose.Schema({
-  ...baseModel,
   name: {
     type: String,
     required: true,
@@ -56,6 +54,8 @@ const promoSchema = new mongoose.Schema({
     ref: "Product",
     required: true
   }],
+}, {
+  timestamps: true
 });
 
 export default mongoose.model("Promo", promoSchema);

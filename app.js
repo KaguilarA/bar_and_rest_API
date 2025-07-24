@@ -5,14 +5,14 @@ import bodyParser from "body-parser";
 
 import APIRoutes from "./api/api.js";
 
-import businessModel from "./models/business.js";
-import cartModel from "./models/cart.js";
-import permissionModel from "./models/permission.js";
-import productModel from "./models/product.js";
-import productTypeModel from "./models/productType.js";
-import promoModel from "./models/promo.js";
-import userModel from "./models/user.js";
-import statesModel from "./models/state.js";
+import businessModel from "./api/models/business.js";
+import cartModel from "./api/models/cart.js";
+import permissionModel from "./api/models/permission.js";
+import productModel from "./api/models/product.js";
+import productTypeModel from "./api/models/productType.js";
+import promoModel from "./api/models/promo.js";
+import userModel from "./api/models/user.js";
+import statesModel from "./api/models/state.js";
 
 // Initialize the Express application
 const app = express();

@@ -1,7 +1,7 @@
 import express from "express";
 import validateAuthUser from "../../middlewares/auth.js";
 import validateUserPermissions from "../../middlewares/permissions.js";
-import ProductController from "../controllers/products.js";
+import ProductController from "../controllers/product.js";
 
 export default (model) => {
   const controller = new ProductController(model);
@@ -19,7 +19,13 @@ export default (model) => {
    * @description Get a product by ID
    * @access Public
    */
-  router.get("/:id", controller.getProductById);
+  router.get("/id/:id", controller.getProductById);
+
+  /**
+   * @route GET /products/types
+   * @description Get all product types
+   */
+  router.get("/types", controller.getTypes.bind(controller));
 
   /**
    * @route POST /products
@@ -37,7 +43,11 @@ export default (model) => {
    * @description Get products by type
    * @access Public
    */
-  router.post("/type", controller.getProductByType);
+  router.post(
+    "/types",
+    [validateAuthUser, validateUserPermissions],
+    controller.registerType.bind(controller)
+  );
 
   /**
    * @route PATCH /products/stock

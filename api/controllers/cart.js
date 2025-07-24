@@ -1,6 +1,6 @@
 import BaseController from "../../utils/baseController.js";
 
-export default class InvoiceController extends BaseController {
+export default class extends BaseController {
   /**
    * Create a new invoice.
    * @param {Object} req - The request object.

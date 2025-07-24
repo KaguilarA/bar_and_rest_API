@@ -1,10 +1,10 @@
 import express from "express";
 import validateAuthUser from "../../middlewares/auth.js";
 import validateUserPermissions from "../../middlewares/permissions.js";
-import InvoiceController from "../controllers/invoices.js";
+import CartController from "../controllers/cart.js";
 
 export default (model) => {
-  const controller = new InvoiceController(model);
+  const controller = new CartController(model);
   const router = express.Router();
 
   /**

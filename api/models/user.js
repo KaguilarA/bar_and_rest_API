@@ -1,9 +1,7 @@
 import mongoose from "mongoose";
-import baseModel from "../utils/baseModel.js";
 
 const userSchema = new mongoose.Schema(
   {
-    ...baseModel,
     name: {
       type: String,
       required: true,
@@ -49,6 +47,7 @@ const userSchema = new mongoose.Schema(
         virtuals: true,
       },
     },
+    timestamps: true
   }
 );
 
