@@ -56,14 +56,17 @@ export default (model) => {
    * @description Creates a new user
    * @access Public
    */
-  router.post("/", controller.register);
+  router.post("/", controller.register.bind(controller));
 
   /**
    * @route POST /users/validate-password
    * @description Validates a user's password
    * @access Public
    */
-  router.post("/validate-password", controller.validatePassword);
+  router.post(
+    "/validate",
+    controller.validatePassword.bind(controller)
+  );
 
   /**
    * @route PUT /users/:id
